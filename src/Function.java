@@ -399,13 +399,13 @@ public class Function {
 	}
 	
 	//print web reactionList
-	public static String radio(String questionID, String optionValue,
-			String optionText) {
-		String str = "";
-		str = "<input type=radio NAME='" + questionID + "' value='"
-				+ optionValue + "' >" + optionText + "<br>";
-		return str;
-	}
+//	public static String radio(String questionID, String optionValue,
+//			String optionText) {
+//		String str = "";
+//		str = "<input type=radio NAME='" + questionID + "' value='"
+//				+ optionValue + "' >" + optionText + "<br>";
+//		return str;
+//	}
 	
 	public static String printReactantListWeb(ArrayList<Partition> partitionList) {
 		String str = "";
@@ -414,27 +414,18 @@ public class Function {
 		String partitionName = partitionList.get(m).getPartitionName();
 		ArrayList<Reactant> reactantList = partitionList.get(m)
 				.getReactantList();
-//		System.out.println("partition is: "+partitionName);
 		str = "<p> partition is: " + partitionName +  "</p>";
 		
 		for (int i = 0; i < reactantList.size(); i++) {
 				Reactant thisReactant = reactantList.get(i);
 			if(thisReactant.getOutputTo().equals(partitionName)){
-//				System.out.print("reactant "+ i + " ");
 				str += "<p>reactant ID: " + i +  " \n";
-				str += "name is: " + thisReactant.getMy_chemical_name() +  " ";
-				str += " number is: " + thisReactant.getNumber() +  " ";
-				str += "concentration is: " + thisReactant.getMy_concentration()  +  " ";
-				str += " output is: " + thisReactant.getOutputTo() +  " ";
-				str += " chemostat is: " + thisReactant.getChemostat() +  " </p>";
-				
-				
-				
-//				System.out.print("name: "+thisReactant.getMy_chemical_name() + " ");
-//				System.out.print("number: "+thisReactant.getNumber() + " ");
-//				System.out.print("concentration: "+thisReactant.getMy_concentration() + " ");
-//				System.out.print("output to: "+thisReactant.getOutputTo() + " ");
-//				System.out.println("chemostat: "+thisReactant.getChemostat());
+				str += "name is: " + thisReactant.getMy_chemical_name() +  " \n";
+				str += " number is: " + thisReactant.getNumber() +  " \n";
+				str += "concentration is: " + thisReactant.getMy_concentration()  +  " \n";
+				str += " output is: " + thisReactant.getOutputTo() +  " \n";
+				str += " chemostat is: " + thisReactant.getChemostat() +  " \n</p>";
+
 			}
 		}
 		}

@@ -1,4 +1,6 @@
+import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -23,6 +25,7 @@ public class ServerSimulator extends javax.servlet.http.HttpServlet implements
 	private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 2;
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024;
 	static String filePath = "";
+	static String fileName = "";
 
 	protected void doPost(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
@@ -81,9 +84,7 @@ public class ServerSimulator extends javax.servlet.http.HttpServlet implements
 				FileItem item = (FileItem) iter.next();
 
 				if (!item.isFormField()) {
-					String fileName = new File(item.getName()).getName();
-//					String filePath = uploadFolder + File.separator + fileName;
-//					filePath = uploadFolder + File.separator + fileName;
+					fileName = new File(item.getName()).getName();
 					filePath = uploadFolder + fileName;
 
 					File uploadedFile = new File(filePath);
@@ -103,7 +104,7 @@ public class ServerSimulator extends javax.servlet.http.HttpServlet implements
 			out.println("</head>");
 			out.println("<body>");
 			
-//			out.println("<p> uploadFolder  is  "+uploadFolder+"</p>");
+			out.println("<p> uploadFolder  is  "+uploadFolder+"</p>");
 			out.println(" file path is  "+filePath+"");
 //			out.println("<p> path is  "+path+"</p>");
 //			out.println("<p>basePath is  "+basePath+"</p>");
@@ -136,6 +137,119 @@ public class ServerSimulator extends javax.servlet.http.HttpServlet implements
 				e.printStackTrace();
 			}
 			out.println(Function.printReactantListWeb(partitionList));
+			
+			
+			
+			
+			
+			float time = 0, dt = (float) 0.001; // dt =0.001s
+			int total = 100000; 					// 100s
+			int reportInterval = 500; 			// 1000 points
+			
+			rrandom random;
+			random = new rrandom(1010101);
+
+
+			try {
+				String resultFile = uploadFolder + fileName + ".xls";
+				BufferedWriter a = new BufferedWriter(new FileWriter(resultFile));
+
+				a.write("Time \t");
+
+				//write name for species
+				for (int m = 0; m < partitionList.size(); m++) {
+					String partitionName = partitionList.get(m).getPartitionName();
+					a.write(partitionName+" \t");
+					ArrayList<Reactant> currentReactantList = partitionList.get(m)
+							.getReactantList();
+				for (int j = 0; j < currentReactantList.size(); j++) {
+					Reactant currentReactant = new Reactant();
+					currentReactant = currentReactantList.get(j);
+					if (!currentReactant.getIs_enzyme() && (currentReactant.getOutputTo().equals(partitionName))) {
+						a.write(currentReactant.getMy_chemical_name() + "\t");
+					}
+				}
+				}
+				
+				a.write("\n");
+				a.write(time + " \t");
+				// write initial number
+				for (int m = 0; m < partitionList.size(); m++) {
+					String partitionName = partitionList.get(m).getPartitionName();
+					a.write(" \t");
+					ArrayList<Reactant> currentReactantList = partitionList.get(m)
+							.getReactantList();
+				for (int j = 0; j < currentReactantList.size(); j++) {
+					Reactant currentReactant = new Reactant();
+					currentReactant = currentReactantList.get(j);
+					if (!currentReactant.getIs_enzyme()) {
+						a.write(currentReactant.getNumber() + "\t");
+					}
+					currentReactant.getDataList()
+							.add(currentReactant.getNumber());
+				}
+				}
+					
+				a.write("\n");
+
+				for (int i = 0; i < total; i += reportInterval) {
+					for (int j = 0; j < reportInterval; j++) {
+						
+						for (int m=0; m<system.getPartitions().size(); m++){
+							Partition currentPartion = system.getPartitions().get(m);
+							currentPartion.reactionProceed(dt, random);						
+						}
+						
+						for (int m=0; m<system.getPartitions().size(); m++){
+							Partition currentPartion = system.getPartitions().get(m);
+							currentPartion.update();						
+						}
+
+						time += dt;
+					}
+					a.write(time + "\t");	
+					
+					
+					for (int m = 0; m < partitionList.size(); m++) {
+						String partitionName = partitionList.get(m).getPartitionName();
+						a.write(" \t");
+						ArrayList<Reactant> currentReactantList = partitionList.get(m)
+								.getReactantList();
+					for (int j = 0; j < currentReactantList.size(); j++) {
+						Reactant currentReactant = new Reactant();
+						currentReactant = currentReactantList.get(j);
+						if (!currentReactant.getIs_enzyme()&& (currentReactant.getOutputTo().equals(partitionName))) {
+							a.write(currentReactant.getNumber() + "\t");
+						}
+						currentReactant.getDataList()
+								.add(currentReactant.getNumber());
+					}
+					
+					
+					}
+		
+					a.write("\n");
+				}
+				a.close();
+
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			
+			out.println("after simulation");
+			
+			out.println(Function.printReactantListWeb(partitionList));
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
 			out.println("</body>");
 			out.println("</html>");
 
