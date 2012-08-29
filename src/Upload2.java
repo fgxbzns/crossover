@@ -14,7 +14,7 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.output.*;
 
-public class upload extends HttpServlet {
+public class Upload2 extends HttpServlet {
    
    private boolean isMultipart;
    private String filePath;

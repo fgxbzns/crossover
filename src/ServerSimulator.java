@@ -1,6 +1,7 @@
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,8 +13,9 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.w3c.dom.Document;
 
-public class UploadServlet extends javax.servlet.http.HttpServlet implements
+public class ServerSimulator extends javax.servlet.http.HttpServlet implements
 		javax.servlet.Servlet {
 	static final long serialVersionUID = 1L;
 
@@ -58,11 +60,11 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 		String uploadFolder = getServletContext().getRealPath("")
 				+ File.separator + DATA_DIRECTORY;
 		
-		String path = request.getContextPath();
-		String basePath = request.getScheme() + "://"
-				+ request.getServerName() + ":" + request.getServerPort()
-				+ path + "/";
-		String servletPath = basePath + "servlet/coreservlets.";
+//		String path = request.getContextPath();
+//		String basePath = request.getScheme() + "://"
+//				+ request.getServerName() + ":" + request.getServerPort()
+//				+ path + "/";
+//		String servletPath = basePath + "servlet/coreservlets.";
 		
 
 		// Create a new file upload handler
@@ -101,12 +103,39 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 			out.println("</head>");
 			out.println("<body>");
 			
-			out.println("<p> uploadFolder  is  "+uploadFolder+"</p>");
-			out.println("<p> file path is  "+filePath+"</p>");
-			out.println("<p> path is  "+path+"</p>");
-			out.println("<p>basePath is  "+basePath+"</p>");
-			out.println("<p>servletPath is  "+servletPath+"</p>");
+//			out.println("<p> uploadFolder  is  "+uploadFolder+"</p>");
+			out.println(" file path is  "+filePath+"");
+//			out.println("<p> path is  "+path+"</p>");
+//			out.println("<p>basePath is  "+basePath+"</p>");
+//			out.println("<p>servletPath is  "+servletPath+"</p>");
 			
+			
+			Document doc = null;
+			doc = Function.getDocument(filePath);
+			
+			ArrayList<Partition> partitionList = new ArrayList<Partition>();
+			ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
+			ArrayList<Reaction> reactionList = new ArrayList<Reaction>();
+
+			Function.getGlobalSystem(doc);
+			
+			// get partition with its reactants and reactions
+			Function.getPartitionList(doc);
+
+			GlobalSystem system = GlobalSystem.getInstance();
+			
+			partitionList = system.getPartitions();
+			
+			reactantList = partitionList.get(0).getReactantList();
+
+			try {
+				reactionList = partitionList.get(0).getReactionList();
+				out.println("<p>there are " + reactionList.size()
+						+ " reactions </p>");
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			out.println(Function.printReactantListWeb(partitionList));
 			out.println("</body>");
 			out.println("</html>");
 
