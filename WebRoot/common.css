@@ -24,12 +24,18 @@ body
     background-color: White;
 }
 
+#result_div
+{
+	width: 90%;
+	align: center;
+}
+
 .result_table
 {
 	color: balck;
 	width: 90%;
 	align: center;
-	border: 1px;
+	border: 1;
 }
 
 .result_table tr
