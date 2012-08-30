@@ -22,7 +22,9 @@
 		<meta http-equiv="description" content="This is my page">
 
 		<%-- css --%>
-		<link href="http://i5-pc:8080/crossover/common.css" rel="stylesheet"
+<!--		<link href="http://i5-pc:8080/crossover/common.css" rel="stylesheet"-->
+<!--			type="text/css" />-->
+		<link href="http://i3-540:8081/crossover/common.css" rel="stylesheet"
 			type="text/css" />
 
 	</head>
@@ -38,9 +40,11 @@
 		<%
 			String filePath = "";
 			String fileName = "";
-			String uploadFolder = "D:/webServer/";
+	//		String uploadFolder = "D:/webServer/";
+			String uploadFolder = "D:/Dropbox/major/cs_project/webServer/models/";
 			//fileName = "enzyme";
-			fileName = "autoReg";
+			//fileName = "autoReg";
+			fileName = "glycolysis";
 			
 			float time = 0, dt = (float) 0.001; // dt =0.001s
 			int total = 100000; // 100s
@@ -217,7 +221,9 @@
 				
 		for (int i = 0; i < reactantList.size(); i++) {
 				Reactant thisReactant = reactantList.get(i);
-			if(!thisReactant.getMy_chemical_name().equals("empty") && (!thisReactant.getIs_enzyme()) &&thisReactant.getOutputTo().equals(partitionName)){
+			if(!thisReactant.getMy_chemical_name().equals("empty")  && (!thisReactant.getIs_enzyme()) && thisReactant.getOutputTo().equals(partitionName)){
+			
+			// && (!thisReactant.getIs_enzyme()) && thisReactant.getOutputTo().equals(partitionName)){
 				out.println("<tr>");
 				out.println("<td>" + i + "</td>");
 				out.println("<td>" + thisReactant.getMy_chemical_name() + "</td>");
