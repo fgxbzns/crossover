@@ -204,7 +204,6 @@
 		out.println("<h3> Compartment: " + partitionName + "</h3>");
 		
 		out.println("<table class='result_table'>");
-//		out.println("<table style='color:white' width='90%'  align='center' border='1'>");
 		
 		
 		out.println("<tr>");
