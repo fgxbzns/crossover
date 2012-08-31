@@ -28,7 +28,8 @@
 		This is my JSP page.
 		<br>
 
-		<form method="post" action="servlet/UploadServlet"
+<!--		<form method="post" action="servlet/UploadServlet"-->
+		<form method="post" action="servlet/Jchart"
 			enctype="multipart/form-data">
 			Select file to upload:
 			<input type="file" name="dataFile" id="fileChooser" />

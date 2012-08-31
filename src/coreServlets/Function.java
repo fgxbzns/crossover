@@ -70,8 +70,17 @@ public class Function {
 		float time = Float.valueOf(systemElement.getAttribute("time"));
 		float timestep = Float.valueOf(systemElement.getAttribute("timestep"));
 		int total = Integer.valueOf(systemElement.getAttribute("total"));
-		int reportInterval = Integer.valueOf(systemElement.getAttribute("reportInterval"));
+		int reportInterval = Integer.valueOf(systemElement
+				.getAttribute("reportInterval"));
 
+//		ArrayList<String> timeList = new ArrayList<String>();
+//
+//		for (int i = 0; i < total; i += reportInterval) {
+//			for (int j = 0; j < reportInterval; j++) {
+//				time += timestep;
+//			}
+//			timeList.add(time.);
+//		}
 		GlobalSystem.getInstance().setTime(time);
 		GlobalSystem.getInstance().setDt(timestep);
 		GlobalSystem.getInstance().setTotal(total);

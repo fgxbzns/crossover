@@ -9,6 +9,7 @@ public class GlobalSystem {
 	protected static GlobalSystem _instance = null;
 
 	ArrayList<Partition> partitions;
+	ArrayList<String> timeList;
 	float time, dt;
 	int total, reportInterval;
 	rrandom random;
@@ -66,6 +67,14 @@ public class GlobalSystem {
 
 	public void setReportInterval(int reportInterval) {
 		this.reportInterval = reportInterval;
+	}
+	
+	public ArrayList<String> getTimeList() {
+		return timeList;
+	}
+
+	public void setTimeList(ArrayList<String> timeList) {
+		this.timeList = timeList;
 	}
 
 	

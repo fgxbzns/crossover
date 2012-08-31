@@ -1,5 +1,7 @@
 <%@ page language="java"
 	import="java.util.*,java.sql.*,javax.servlet.*,java.io.*,org.w3c.dom.Document,coreServlets.*"
+	import="java.awt.*,org.jCharts.*,org.jCharts.chartData.*,org.jCharts.properties.*,org.jCharts.types.ChartType,org.jCharts.axisChart.*,org.jCharts.test.TestDataGenerator,org.jCharts.encoders.JPEGEncoder13,org.jCharts.properties.util.ChartFont,
+					  org.jCharts.encoders.ServletEncoderHelper,org.jCharts.*"
 	pageEncoding="ISO-8859-1"%>
 <%
 	String path = request.getContextPath();
@@ -13,7 +15,7 @@
 	<head>
 		<base href="<%=basePath%>">
 
-		<title>My JSP 'websimulator.jsp' starting page</title>
+		<title>Crossover Algorithm</title>
 
 		<meta http-equiv="pragma" content="no-cache">
 		<meta http-equiv="cache-control" content="no-cache">
@@ -22,10 +24,10 @@
 		<meta http-equiv="description" content="This is my page">
 
 		<%-- css --%>
-		<link href="http://i5-pc:8080/crossover/common.css" rel="stylesheet"
+		<!--		<link href="http://i5-pc:8080/crossover/common.css" rel="stylesheet"-->
+		<!--			type="text/css" />-->
+		<link href="http://i3-540:8081/crossover/common.css" rel="stylesheet"
 			type="text/css" />
-<!--		<link href="http://i3-540:8081/crossover/common.css" rel="stylesheet"-->
-<!--			type="text/css" />-->
 
 	</head>
 
@@ -37,12 +39,49 @@
 		<br>
 		<br>
 
+		<div class="mainboard">
+
+		<h4 align='left'>
+			1. Enzyme
+			<a href="" target='_blank'>Model description</a>
+			<a href="" target='_blank'>XML</a>
+			<a href="
+			<% out.println(basePath+"webSimulator.jsp?fileName=enzyme"); %>" >Run simulation</a>
+		</h4>
+		<h4 align='left'>
+			2. Auto gene regulatory
+			<a href="" target='_blank'>Model description</a>
+			<a href="" target='_blank'>XML</a>
+			<a href="
+			<% out.println(basePath+"webSimulator.jsp?fileName=autoReg"); %>" >Run simulation</a>
+		</h4>
+		<h4 align='left'>
+			3. Lac
+			<a href="" target='_blank'>Model description</a>
+			<a href="" target='_blank'>XML</a>
+			<a href="
+			<% out.println(basePath+"webSimulator.jsp?fileName=lac"); %>" >Run simulation</a>
+		</h4>
+		<h4 align='left'>
+			4. Dim
+			<a href="" target='_blank'>Model description</a>
+			<a href="" target='_blank'>XML</a>
+			<a href="
+			<% out.println(basePath+"webSimulator.jsp?fileName=dim"); %>" >Run simulation</a>
+		</h4>
+
+		
 		<%
 			String filePath = "";
 			String fileName = "";
 	//		String uploadFolder = "D:/webServer/";
-			String uploadFolder = "e:/Dropbox/major/cs_project/webServer/models/";
-			fileName = "enzyme";
+			String uploadFolder = "d:/Dropbox/major/cs_project/webServer/models/";
+			fileName = "autoReg";
+			
+			if(request.getParameter("fileName")!= null){
+				fileName = request.getParameter("fileName");
+			}
+			//fileName = "enzyme";
 			//fileName = "autoReg";
 			//fileName = "glycolysis";
 			
@@ -63,6 +102,8 @@
 
 			ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
 			ArrayList<Reaction> reactionList = new ArrayList<Reaction>();
+			
+			ArrayList<String> timeList = new ArrayList<String>(); // list for time steps
 
 			Function.getGlobalSystem(doc);
 
@@ -76,6 +117,9 @@
 			GlobalSystem system = GlobalSystem.getInstance();
 
 			partitionList = system.getPartitions();
+	//		total = system.getTotal();						// 100s
+	//		reportInterval = system.getReportInterval(); 	// 1000 points
+			timeList = system.getTimeList();
 
 			reactantList = partitionList.get(0).getReactantList();
 
@@ -120,6 +164,8 @@
 
 				outputFile.write("\n");
 				outputFile.write(time + " \t");
+				//system.getTimeList().add(""+time);
+				
 				// write initial number
 				for (int m = 0; m < partitionList.size(); m++) {
 					String partitionName = partitionList.get(m)
@@ -188,21 +234,25 @@
 
 			//out.println(Function.printReactantListWeb(partitionList));
 		%>
-		
-		
-		<div class="mainboard">
-		<div id="parameters_div">
-		
-		
-		
-		
-		</div>
-		<div id="result_div">
-		
-	
 
-		<%
+
+			<div id="parameters_div">
+
+
+
+
+			</div>
+			<div id="result_div">
+
+
+
+				<%
 		String resultFile = basePath + fileName + ".xls";
+		
+		
+		//out.println(system.getTimeList().get(50));
+		out.println(""+time);
+		
 		
 		out.println("<h4 align='left'>You can download the simulation result<a href="+resultFile+" target='_blank'>here</a>.</h4>");
 		
@@ -217,7 +267,7 @@
 		out.println("<table class='result_table' border='1'> ");
 	
 		out.println("<tr>");
-		out.println("<td> Reaction ID </td>");
+		out.println("<td> Reactant ID </td>");
 		out.println("<td> Name </td>");
 		out.println("<td> Chemstat </td>");
 		out.println("<td> Initial value </td>");
@@ -244,13 +294,18 @@
 		
 		
 		 %>
-	
-		
-		
-		</div>
-		
-		
-		<div id="graph_div"></div>
+
+
+
+			</div>
+
+
+			<div id="graph_div"></div>
+			
+			
+			 <img src="servlet/coreServlets.Jchart" alt="Smiley face" height="360" width="550" /> 
+			
+			
 		</div>
 
 
