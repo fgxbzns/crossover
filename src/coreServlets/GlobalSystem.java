@@ -11,10 +11,12 @@ public class GlobalSystem {
 	ArrayList<Partition> partitions;
 	ArrayList<String> timeList;
 	float time, dt;
-	int total, reportInterval;
+	int total=0, reportInterval=0;
 	rrandom random;
+	String currentModel = "";
+	String simulationMethod = "";
 	
-	
+
 	private GlobalSystem() {
 	} // construction function
 	
@@ -76,7 +78,14 @@ public class GlobalSystem {
 	public void setTimeList(ArrayList<String> timeList) {
 		this.timeList = timeList;
 	}
-
 	
+	public String getCurrentModel() {
+		return currentModel;
+	}
+
+	public void setCurrentModel(String currentModel) {
+		this.currentModel = currentModel;
+	}
+
 
 }
