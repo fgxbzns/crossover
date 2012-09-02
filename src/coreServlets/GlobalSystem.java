@@ -14,8 +14,9 @@ public class GlobalSystem {
 	int total=0, reportInterval=0;
 	rrandom random;
 	String currentModel = "";
-	String simulationMethod = "";
+	String simulationMethod = "crossover";
 	
+
 
 	private GlobalSystem() {
 	} // construction function
@@ -85,6 +86,14 @@ public class GlobalSystem {
 
 	public void setCurrentModel(String currentModel) {
 		this.currentModel = currentModel;
+	}
+	
+	public String getSimulationMethod() {
+		return simulationMethod;
+	}
+
+	public void setSimulationMethod(String simulationMethod) {
+		this.simulationMethod = simulationMethod;
 	}
 
 
