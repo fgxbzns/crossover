@@ -68,7 +68,7 @@
 						methods.
 					</p>
 					<h2>
-						Features?
+						Features:
 					</h2>
 					<p style="margin-left: 200px; margin-top: -10px">
 						<li>
@@ -166,8 +166,15 @@
 					system.setSimulationMethod("deterministic");
 					isDeterministic = true;
 					isCrossover = false;
-				} else {
+				} else if (request.getParameter("simulationMethod") != null
+						&& request.getParameter("simulationMethod").equals(
+								"crossover")) {
+					simulationMethod = "crossover";
 					system.setSimulationMethod("crossover");
+				} else if (!system.getSimulationMethod().equals("")) {
+					simulationMethod = system.getSimulationMethod();
+				} else {
+					system.setSimulationMethod("crossover"); //default method
 					isDeterministic = false;
 					isCrossover = true;
 				}
@@ -199,19 +206,31 @@
 
 				float time = 0, dt = (float) 0.001; // dt =0.001s
 				int totalTime = 100000; // 100s
-				int reportInterval = 500; // 200 points
+				int reportInterval = 1000; // 100 points
 
 				if (request.getParameter("totalTime") != null) {
 					totalTime = Integer.parseInt(request.getParameter("totalTime"));
 					system.setTotal(totalTime);
+				} 
+			/*	else if (system.getTotal()!= 0 && totalTime != system.getTotal())
+				{
+					totalTime = system.getTotal();
+					system.setTotal(totalTime);
 				}
-
+*/
 				if (request.getParameter("numOfPoints") != null) {
 					reportInterval = totalTime
 							/ Integer.parseInt(request.getParameter("numOfPoints"));
 					system.setReportInterval(reportInterval);
+				} 
+				
+			/*	else if (system.getReportInterval()!= 0 && reportInterval != (totalTime/system.getReportInterval()))
+				{
+					reportInterval = totalTime
+							/ system.getReportInterval();
+					system.setReportInterval(reportInterval);
 				}
-
+*/
 				partitionList = system.getPartitions();
 
 				timeList = system.getTimeList();
@@ -446,10 +465,6 @@
 						out.println("<td> Final value </td>");
 						out.println("<td> Display Graph </td>");
 						out.println("</tr>");
-						
-						//DecimalFormat dec = new DecimalFormat("###.##");
-
-						//System.out.println(dec.format(value));
 
 						for (int i = 0; i < reactantList.size(); i++) {
 							Reactant thisReactant = reactantList.get(i);
@@ -464,11 +479,18 @@
 										+ "</td>");
 								out.println("<td>" + thisReactant.getInitial_number()
 										+ "</td>");
-								out
-										.println("<td>" + thisReactant.getNumber()
-												+ "</td>");
-								out.println("<td>" + thisReactant.getMy_chemical_name()
-										+ "</td>");
+
+								double finalNumber = Math.round(thisReactant
+										.getNumber() * 100.0) / 100.0; // round the number to two decimal point
+								out.println("<td>" + finalNumber + "</td>");
+								//out.println("<td>" + thisReactant.getMy_chemical_name()
+								//		+ "</td>");
+								out.println("<td>" + "<a href='" + basePath
+										+ "webSimulator.jsp?reactantToDisplay="
+										+ thisReactant.getMy_chemical_name()
+										+ "'> Display "
+										+ thisReactant.getMy_chemical_name()
+										+ "</a></td>");
 								out.println("</tr>");
 
 							}
@@ -478,16 +500,33 @@
 					}
 				%>
 
+			</div>
+
+			<div id="graph_div">
+
+
+				<!--				<img src="servlet/coreServlets.Jchart" alt="Simulation graph"-->
+				<!--					height="360" width="550" />-->
+
+				<%
+					String reactantToDisplay = "";
+
+					if (request.getParameter("reactantToDisplay") != null) {
+						reactantToDisplay = request.getParameter("reactantToDisplay");
+						out
+								.println("<img src='servlet/coreServlets.Jchart?reactantToDisplay="
+										+ reactantToDisplay
+										+ "' alt='Simulation graph' height='360' width='550' />");
+
+					} else {
+						out.println("Please choose a reactant to display.");
+					}
+				%>
+
+
 
 
 			</div>
-
-
-			<div id="graph_div"></div>
-
-
-			<img src="servlet/coreServlets.Jchart" alt="Simulation graph"
-				height="360" width="550" />
 
 
 		</div>
