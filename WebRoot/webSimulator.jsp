@@ -205,31 +205,53 @@
 				}
 
 				float time = 0, dt = (float) 0.001; // dt =0.001s
-				int totalTime = 100000; // 100s
-				int reportInterval = 1000; // 100 points
+				int totalTime = system.getTotal(); // 100s
+				int reportInterval = system.getReportInterval(); // 100 points
+				
+				//int totalTime = 100000; // 100s
+				//int reportInterval = 1000; // 100 points
 
+				// pass user defined totalTime and numOfPoints for graph display
+				synchronized (session) {
+
+					if (session.getAttribute("totalTime") != null
+							&& session.getAttribute("reportInterval") != null) {
+						totalTime = (Integer) session.getAttribute("totalTime");
+						system.setTotal(totalTime);
+						reportInterval = (Integer) session
+								.getAttribute("reportInterval");
+						system.setReportInterval(reportInterval);
+						
+						//out.println(totalTime);
+						//out.println (reportInterval);
+					}
+					
+					session.removeAttribute("totalTime");
+					session.removeAttribute("reportInterval");
+				}
+
+				// totalTime and numOfPoints submitted by form are checked here.
 				if (request.getParameter("totalTime") != null) {
 					totalTime = Integer.parseInt(request.getParameter("totalTime"));
 					system.setTotal(totalTime);
-				} 
-			/*	else if (system.getTotal()!= 0 && totalTime != system.getTotal())
-				{
-					totalTime = system.getTotal();
-					system.setTotal(totalTime);
+					synchronized (session) {
+							session.setAttribute("totalTime", totalTime);
+						}
 				}
-*/
+
 				if (request.getParameter("numOfPoints") != null) {
 					reportInterval = totalTime
 							/ Integer.parseInt(request.getParameter("numOfPoints"));
 					system.setReportInterval(reportInterval);
-				} 
-				
-			/*	else if (system.getReportInterval()!= 0 && reportInterval != (totalTime/system.getReportInterval()))
-				{
-					reportInterval = totalTime
-							/ system.getReportInterval();
-					system.setReportInterval(reportInterval);
+					synchronized (session) {
+							session.setAttribute("reportInterval", reportInterval);
+						}
 				}
+				
+	/*			synchronized (session) {
+							session.setAttribute("totalTime", totalTime);
+							session.setAttribute("reportInterval", reportInterval);
+						}
 */
 				partitionList = system.getPartitions();
 
@@ -485,9 +507,13 @@
 								out.println("<td>" + finalNumber + "</td>");
 								//out.println("<td>" + thisReactant.getMy_chemical_name()
 								//		+ "</td>");
-								out.println("<td>" + "<a href='" + basePath
+								out.println("<td>"
+										+ "<a href='"
+										+ basePath
 										+ "webSimulator.jsp?reactantToDisplay="
 										+ thisReactant.getMy_chemical_name()
+										//+ "?totalTime=" + totalTime
+										//+ "?numOfPoints=" + totalTime/reportInterval
 										+ "'> Display "
 										+ thisReactant.getMy_chemical_name()
 										+ "</a></td>");
@@ -517,6 +543,12 @@
 								.println("<img src='servlet/coreServlets.Jchart?reactantToDisplay="
 										+ reactantToDisplay
 										+ "' alt='Simulation graph' height='360' width='550' />");
+
+						// To pass the current totalTime and reportInterval in case user has made changes.	
+						synchronized (session) {
+							session.setAttribute("totalTime", totalTime);
+							session.setAttribute("reportInterval", reportInterval);
+						}
 
 					} else {
 						out.println("Please choose a reactant to display.");
