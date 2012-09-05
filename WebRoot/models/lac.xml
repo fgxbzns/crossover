@@ -1,0 +1,124 @@
+<system time="0" timestep="10." total="100000" reportInterval ="1000">
+<partition name="cell" volume="0.000000000000001">
+
+<reactant name="Idna" number="1" chemostat="false"/>
+<reactant name="Irna" concentration="0." chemostat="false"/>
+<reactant name="I" number="50" chemostat="false"/>
+<reactant name="Op" number="1" chemostat="false"/>
+<reactant name="Rnap" number="100" chemostat="false"/>
+<reactant name="Rna" concentration="0." chemostat="false"/>
+<reactant name="Z" concentration="0." chemostat="false"/>
+<reactant name="Lactose" number="100" chemostat="false"/>
+<reactant name="ILactose" concentration="0." chemostat="false"/>
+<reactant name="IOp" concentration="0." chemostat="false"/>
+<reactant name="RnapOp" concentration="0." chemostat="false"/>
+<reactant name="empty" concentration="0." chemostat="false"/>
+
+<reaction id="r1" constant="0.02">
+	<input name="Idna" constant="0.009"/>
+	<output name="Idna" />
+	<output name="Irna" />
+</reaction>
+
+<reaction id="r2" constant="0.1">
+	<input name="Irna" constant="0.9"/>
+	<output name="Irna" />
+	<output name="I" />
+</reaction>
+
+<reaction id="r3" constant="0.005">
+	<input name="I" constant="0.000007"/>
+	<input name="Lactose" constant="0.000003"/>
+	<output name="ILactose" />
+</reaction>
+
+<reaction id="r4" constant="0.1">
+	<input name="ILactose" constant="0.07"/>
+	<output name="I" />
+	<output name="Lactose" />
+</reaction>
+
+<reaction id="r5" constant="1.">
+	<input name="I" constant="0.0000008"/>
+	<input name="Op" constant="0.000005"/>
+	<output name="IOp" />
+</reaction>
+
+<reaction id="r6" constant="0.01">
+	<input name="IOp" constant="0.00005"/>
+	<output name="I" />
+	<output name="Op" />
+</reaction>
+
+<reaction id="r7" constant="0.1">
+	<input name="Op" constant="0.00007"/>
+	<input name="Rnap" constant="0.009"/>
+	<output name="RnapOp" />
+</reaction>
+
+<reaction id="r8" constant="0.01">
+	<input name="RnapOp" constant="0.0003"/>
+	<output name="Op" />
+	<output name="Rnap" />
+</reaction>
+
+<reaction id="r9" constant="0.03">
+	<input name="RnapOp" constant="0.02"/>
+	<output name="Op" />
+	<output name="Rnap" />
+	<output name="Rna" />
+</reaction>
+
+<reaction id="r10" constant="0.1">
+	<input name="Rna" constant="0.002"/>
+	<output name="Rna" />
+	<output name="Z" />
+</reaction>
+
+<reaction id="r11" constant="0.00001">
+	<input name="Lactose" constant="0.002"/>
+	<input name="Z" constant="0.003"/>
+	<output name="Z" />
+</reaction>
+
+<reaction id="r12" constant="0.01">
+	<input name="Irna" constant="0.00003"/>
+	<output name="empty" />
+</reaction>
+
+<reaction id="r13" constant="0.002">
+	<input name="I" constant="0.0000001"/>
+	<output name="empty" />
+</reaction>
+
+<reaction id="r14" constant="0.002">
+	<input name="ILactose" constant="0.00005"/>
+	<output name="Lactose" />
+</reaction>
+
+<reaction id="r15" constant="0.01">
+	<input name="Rna" constant="0.00005"/>
+	<output name="empty" />
+</reaction>
+
+<reaction id="r16" constant="0.0001">
+	<input name="Z" constant="0.0005"/>
+	<output name="empty" />
+</reaction>
+
+</partition>
+</system>
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,26 @@
+<system time="0" timestep="10." total="100000" reportInterval ="1000">
+<partition name="cell" volume="0.000000000000001">
+<reactant name="s1" number="100" chemostat="false"/>
+<reactant name="s2" concentration="0." chemostat="false"/>
+<reactant name="s3" concentration="0." chemostat="false"/>
+<reactant name="empty" concentration="0." chemostat="false"/>
+<reaction constant="1.">
+<input name="s1" constant="0.00005"/>
+<output name="empty" />
+</reaction>
+<reaction constant="10.">
+<input name="s1" constant="0.005"/>
+<input name="s1" constant="0.005"/>
+<output name="s2" />
+</reaction>
+<reaction constant="0.5">
+<input name="s2" constant="0.01"/>
+<output name="s1" />
+<output name="s1" />
+</reaction>
+<reaction constant="0.04">
+<input name="s2" constant="0.005"/>
+<output name="s3" />
+</reaction>
+</partition>
+</system>

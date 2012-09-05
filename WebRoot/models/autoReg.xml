@@ -1,0 +1,58 @@
+<system time="0" timestep="10." total="100000" reportInterval ="1000">
+<partition name="cell" volume="0.000000000000001">
+
+<reactant name="gene" number="10" chemostat="false"/>
+<reactant name="gene_dimer" concentration="0." chemostat="false"/>
+<reactant name="rna" concentration="0." chemostat="false"/>
+<reactant name="monomer" concentration="0." chemostat="false"/>
+<reactant name="dimer" concentration="0." chemostat="false"/>
+<reactant name="empty" concentration="0." chemostat="false"/>
+
+<reaction id="r1" constant="0.01">
+<input name="gene" />
+<output name="gene" />
+<output name="rna" />
+</reaction>
+
+<reaction id="r2" constant="10">
+<input name="rna" />
+<output name="rna" />
+<output name="monomer" />
+</reaction>
+
+<reaction id="r3" constant="1.0">
+<input name="monomer" />
+<input name="monomer" />
+<output name="dimer" />
+</reaction>
+
+<reaction id="r4" constant="1.0">
+<input name="dimer" />
+<output name="monomer" />
+<output name="monomer" />
+</reaction>
+
+<reaction id="r5" constant="1.">
+<input name="gene" />
+<input name="dimer" />
+<output name="gene_dimer" />
+</reaction>
+
+<reaction id="r6" constant="10.">
+<input name="gene_dimer" />
+<output name="gene" />
+<output name="dimer" />
+</reaction>
+
+<reaction id="r7" constant="0.1">
+<input name="rna" />
+<output name="empty" />
+</reaction>
+
+<reaction id="r8" constant="0.01">
+<input name="monomer" />
+<output name="empty" />
+</reaction>
+
+</partition>
+</system>

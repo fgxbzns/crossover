@@ -47,12 +47,10 @@
 						The deterministic-stochastic crossover algorithm is a novel method
 						for simulating biological networks. It retains the high efficiency
 						of deterministic method while still reflects the stochastic
-						effects of random fluctuations that are dominant as the system
-						transitions into a lower concentration. The ability of revealing
-						the stochastic property with high efficiency makes this algorithm
-						very useful for researches and applications based on systems
-						biology.
-
+						effects of random fluctuations of the system at lower
+						concentration. The ability of revealing the stochastic property
+						with high efficiency makes this algorithm very useful for
+						researches and applications based on systems biology.
 					</p>
 					<h2>
 						Why?
@@ -86,7 +84,6 @@
 						</li>
 					</p>
 					<br />
-
 				</div>
 
 			</div>
@@ -97,54 +94,64 @@
 						Model examples:
 					</h2>
 					<h4 align='left'>
-						1. Enzyme
-						<a href="" target='_blank'>Model description</a>
-						<a href="" target='_blank'>XML</a>
+						1. Michaelis-Menten enzyme kinetics &nbsp
+						<a href="" target='_blank'>Reactions</a>&nbsp
+						<a href="<%out.println(basePath);%>models/enzyme.xml"
+							target='_blank'>XML</a>&nbsp
 						<a
 							href="
 			<%out.println(basePath + "webSimulator.jsp?fileName=enzyme");%>">Run
 							simulation</a>
 					</h4>
 					<h4 align='left'>
-						2. Auto gene regulatory
-						<a href="" target='_blank'>Model description</a>
-						<a href="" target='_blank'>XML</a>
+						2. Auto-regulatory genetic network &nbsp
+						<a href="" target='_blank'>Reactions</a>&nbsp
+						<a href="<%out.println(basePath);%>models/autoReg.xml"
+							target='_blank'>XML</a>&nbsp
 						<a
 							href="
 			<%out.println(basePath + "webSimulator.jsp?fileName=autoReg");%>">Run
 							simulation</a>
 					</h4>
 					<h4 align='left'>
-						3. Lac
-						<a href="" target='_blank'>Model description</a>
-						<a href="" target='_blank'>XML</a>
-						<a
-							href="
-			<%out.println(basePath + "webSimulator.jsp?fileName=lac");%>">Run
-							simulation</a>
-					</h4>
-					<h4 align='left'>
-						4. Dim
-						<a href="" target='_blank'>Model description</a>
-						<a href="" target='_blank'>XML</a>
+						3. Dimerisation kinetics &nbsp
+						<a href="" target='_blank'>Reactions</a>&nbsp
+						<a href="<%out.println(basePath);%>models/dim.xml" target='_blank'>XML</a>
+						&nbsp
 						<a
 							href="
 			<%out.println(basePath + "webSimulator.jsp?fileName=dim");%>">Run
 							simulation</a>
 					</h4>
+					<h4 align='left'>
+						4. lac operon &nbsp
+						<a href="" target='_blank'>Reactions</a> &nbsp
+						<a href="<%out.println(basePath);%>models/lac.xml" target='_blank'>XML</a>
+						&nbsp
+						<a
+							href="
+			<%out.println(basePath + "webSimulator.jsp?fileName=lac");%>">Run
+							simulation</a>
+					</h4>
+
 				</div>
 			</div>
 
 
 			<%
-				String filePath = "";
 				String fileName = "";
-				String simulationMethod = "crossover"; //default value
+				String resultFile = "";
+
+				//model xml file location
+				String modelDiskPath = getServletContext().getRealPath("")
+						+ File.separator + "models/";
+				String simulationMethod = "crossover"; //default value			
+
 				boolean isDeterministic = false;
 				boolean isCrossover = true;
 
 				//		String uploadFolder = "D:/webServer/";
-				String uploadFolder = "d:/Dropbox/major/cs_project/webServer/models/";
+				//String uploadFolder = "e:/Dropbox/major/cs_project/webServer/models/";
 
 				GlobalSystem system = GlobalSystem.getInstance();
 
@@ -179,10 +186,12 @@
 					isCrossover = true;
 				}
 
-				filePath = uploadFolder + fileName;
-				String xmlFile = uploadFolder + fileName + ".xml";
+				//filePath = modelDiskPath + fileName;
+				String xmlFile = modelDiskPath + fileName + ".xml";
 
-				//	out.println("<p> uploadFolder  is  " + uploadFolder + "</p>");
+				//String xmlFile = basePath + fileName + ".xml";
+				//out.println(" basePath  is  " + basePath + "");
+				out.println(" modelDiskPath  is  " + modelDiskPath + "");
 				//	out.println(" file path is  " + xmlFile + "");
 
 				Document doc = null;
@@ -207,7 +216,7 @@
 				float time = 0, dt = (float) 0.001; // dt =0.001s
 				int totalTime = system.getTotal(); // 100s
 				int reportInterval = system.getReportInterval(); // 100 points
-				
+
 				//int totalTime = 100000; // 100s
 				//int reportInterval = 1000; // 100 points
 
@@ -221,11 +230,11 @@
 						reportInterval = (Integer) session
 								.getAttribute("reportInterval");
 						system.setReportInterval(reportInterval);
-						
+
 						//out.println(totalTime);
 						//out.println (reportInterval);
 					}
-					
+
 					session.removeAttribute("totalTime");
 					session.removeAttribute("reportInterval");
 				}
@@ -235,8 +244,8 @@
 					totalTime = Integer.parseInt(request.getParameter("totalTime"));
 					system.setTotal(totalTime);
 					synchronized (session) {
-							session.setAttribute("totalTime", totalTime);
-						}
+						session.setAttribute("totalTime", totalTime);
+					}
 				}
 
 				if (request.getParameter("numOfPoints") != null) {
@@ -244,15 +253,10 @@
 							/ Integer.parseInt(request.getParameter("numOfPoints"));
 					system.setReportInterval(reportInterval);
 					synchronized (session) {
-							session.setAttribute("reportInterval", reportInterval);
-						}
+						session.setAttribute("reportInterval", reportInterval);
+					}
 				}
-				
-	/*			synchronized (session) {
-							session.setAttribute("totalTime", totalTime);
-							session.setAttribute("reportInterval", reportInterval);
-						}
-*/
+
 				partitionList = system.getPartitions();
 
 				timeList = system.getTimeList();
@@ -272,7 +276,7 @@
 				random = new rrandom(1010101);
 
 				try {
-					String resultFile = uploadFolder + fileName + ".xls";
+					resultFile = modelDiskPath + fileName + ".xls";
 					BufferedWriter outputFile = new BufferedWriter(new FileWriter(
 							resultFile));
 
@@ -300,7 +304,6 @@
 
 					outputFile.write("\n");
 					outputFile.write(time + " \t");
-					//system.getTimeList().add(""+time);
 
 					// write initial number
 					for (int m = 0; m < partitionList.size(); m++) {
@@ -378,7 +381,6 @@
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				//out.println(Function.printReactantListWeb(partitionList));
 			%>
 
 
@@ -459,13 +461,11 @@
 
 
 				<%
-					String resultFile = basePath + fileName + ".xls";
-
-					//out.println(system.getTimeList().get(50));
+					resultFile = modelDiskPath + fileName + ".xls";
 					//out.println("" + time);
 
 					out
-							.println("<h4 align='left'>The simulation result can be downloaded<a href="
+							.println("<h4 align='left'>The simulation result can be downloaded <a href="
 									+ resultFile + " target='_blank'>here</a>.</h4>");
 
 					//out.println(resultFile);
