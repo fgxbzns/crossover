@@ -1,0 +1,335 @@
+<system time="0" timestep="10." total="100000" reportInterval ="100">
+
+<partition name="extracellar" volume="0.000000000000001">
+
+<!-- transportable species    -->
+<reactant  name="extracellular_glucose" concentration="1.55307" chemostat="False" is_enzyme="false" />
+<reactant  name="intracellular_glucose" concentration="0" chemostat="False" is_enzyme="false" outputTo="intracellar"/>
+<reactant  name="intracellular_ethanol" concentration="0" chemostat="False" is_enzyme="false" outputTo="intracellar"/>
+<reactant  name="extracellular_ethanol" concentration="16.4514" chemostat="False" is_enzyme="false" />
+<reactant  name="intracellular_acetaldehyde" concentration="0" chemostat="False" is_enzyme="false" outputTo="intracellar"/>
+<reactant  name="extracellular_acetaldehyde" concentration="1.28836" chemostat="False" is_enzyme="false" />
+<reactant  name="intracellular_glycerol" concentration="0" chemostat="False" is_enzyme="false" outputTo="intracellar"/>
+<reactant  name="extracellular_glycerol" concentration="1.68478" chemostat="False" is_enzyme="false" />
+
+<reactant  name="extracellular_glucose_flow" concentration="18.5" chemostat="true" is_enzyme="false" />
+<reactant  name="extracellular_CN_flow" concentration="5.60" chemostat="true" is_enzyme="false" />
+<reactant  name="extracellular_CN" concentration="5.20358" chemostat="False" is_enzyme="false" />
+<reactant  name="empty" concentration="0" chemostat="False" is_enzyme="false" /> 
+
+<reaction id="r1" name="glucose_flow_forward" use_enzyme="false" constant="8.0E-7" >
+<input name="extracellular_glucose_flow" />
+<output name="extracellular_glucose" />
+</reaction>
+
+<reaction id="r2" name="glucose_flow_reverse" use_enzyme="false" constant="8.0E-7" >
+<input name="extracellular_glucose" />
+<output name="extracellular_glucose_flow" />
+</reaction>
+
+<reaction id="r3" name="glucose_transport_forward" use_enzyme="false" constant="1.6916e-2" outputTo="intracellar">
+<input name="extracellular_glucose" />
+<output name="intracellular_glucose" />
+</reaction>
+
+<reaction id="r21" name="EtOH_transport_reverse" use_enzyme="false" constant="2.7866e-1" outputTo="intracellar">
+<input name="extracellular_ethanol" />
+<output name="intracellular_ethanol" />
+</reaction>
+
+<reaction id="r22" name="extracellular_EtOH_diffusion" use_enzyme="false" constant="8.0E-7" >
+<input name="extracellular_ethanol" />
+<output name="empty" />
+</reaction>
+
+<reaction id="r25" name="glycerol_transport_reverse" use_enzyme="false" constant="3.1666e-2" >
+<input name="extracellular_glycerol" />
+<output name="intracellular_glycerol" />
+</reaction>
+
+<reaction id="r26" name="extracellular_glycerol_diffusion" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_glycerol" />
+<output name="empty" />
+</reaction>
+
+<reaction id="r28" name="acetaldehyde_transport_reverse" use_enzyme="false" constant="4.1166e-1" outputTo="intracellar">
+<input name="extracellular_acetaldehyde" />
+<output name="intracellular_acetaldehyde" />
+</reaction>
+
+<reaction id="r29" name="extracellular_acetaldehyde_diffusion" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_acetaldehyde" />
+<output name="empty" />
+</reaction>
+
+<reaction id="r30" name="lactonitrile_formation" use_enzyme="false" constant="4.7304e-2" >
+<input name="extracellular_acetaldehyde" />
+<input name="extracellular_CN" />
+<output name="empty" />
+</reaction>
+
+<reaction id="r31" name="Cyanid_flow_forward" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_CN" />
+<output name="extracellular_CN_flow" />
+</reaction>
+
+<reaction id="r32" name="Cyanid_flow_reverse" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_CN_flow" />
+<output name="extracellular_CN" />
+</reaction>
+
+</partition>
+
+<partition name="intracellar" volume="0.000000000000001">
+
+<!-- Enzymes -->
+<reactant  name="alcohol_dehydrogenase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="adenylate_kinase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="aldolase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="enolase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="glycerol_3_phosphate_dehydrogenase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="glyceraldehyde_3_phosphate_dehydrogenase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="hexokinase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="pyruvate_decarboxylase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="phosphofructokinase_1" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="phosphoglucoisomerase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="phosphoglycerate_kinase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="phosphoglycerate_mutase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="pyruvate_kinase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="phosphoglycerate_mutase" concentration="1" chemostat="true" is_enzyme="true" />
+<reactant  name="triosephosphate_isomerase" concentration="1" chemostat="true" is_enzyme="true" />
+
+<!-- transportable species    -->
+<reactant  name="intracellular_acetaldehyde" concentration="1.48153" chemostat="False" is_enzyme="false" />
+<reactant  name="extracellular_acetaldehyde" concentration="0" chemostat="False" is_enzyme="false" outputTo="extracellar"/>
+<reactant  name="intracellular_glucose" concentration="0.573074" chemostat="False" is_enzyme="false" />
+<reactant  name="extracellular_glucose" concentration="0" chemostat="False" is_enzyme="false" outputTo="extracellar"/>
+<reactant  name="intracellular_glycerol" concentration="4.196" chemostat="False" is_enzyme="false" />
+<reactant  name="extracellular_glycerol" concentration="0" chemostat="False" is_enzyme="false" outputTo="extracellar"/>
+<reactant  name="intracellular_ethanol" concentration="19.2379" chemostat="False" is_enzyme="false" />
+<reactant  name="extracellular_ethanol" concentration="0" chemostat="False" is_enzyme="false" outputTo="extracellar"/>
+
+<reactant  name="ADP" concentration="1.5" chemostat="False" is_enzyme="false" />
+<reactant  name="AMP" concentration="0.33" chemostat="False" is_enzyme="false" />
+<reactant  name="ATP" concentration="2.1" chemostat="False" is_enzyme="false" />
+<reactant  name="dihydroxyacetone_phosphate" concentration="2.95" chemostat="False" is_enzyme="false" />
+<reactant  name="bisphosphoglycerate_1_3" concentration="0.00027" chemostat="False" is_enzyme="false" />
+<reactant  name="fructose_6_phosphate" concentration="0.49" chemostat="False" is_enzyme="false" />
+<reactant  name="fructose_1_6_bisphosphate" concentration="4.64" chemostat="False" is_enzyme="false" />
+<reactant  name="glucose_6_phosphate" concentration="4.2" chemostat="False" is_enzyme="false" />
+<reactant  name="glyceraldehyde_3_phosphate" concentration="0.115" chemostat="False" is_enzyme="false" />
+<reactant  name="NAD" concentration="0.65" chemostat="False" is_enzyme="false" />
+<reactant  name="NADH" concentration="0.33" chemostat="False" is_enzyme="false" />
+<reactant  name="phosphoenol_pyruvate" concentration="0.04" chemostat="False" is_enzyme="false" />
+<reactant  name="pyruvate" concentration="8.7" chemostat="False" is_enzyme="false" />
+<reactant  name="empty" concentration="0" chemostat="False" is_enzyme="false" /> 
+
+<!--
+<reaction id="r1" name="glucose_flow_forward" use_enzyme="false" constant="8.0E-7" >
+<input name="extracellular_glucose_flow" />
+<output name="extracellular_glucose" />
+</reaction>
+
+<reaction id="r2" name="glucose_flow_reverse" use_enzyme="false" constant="8.0E-7" >
+<input name="extracellular_glucose" />
+<output name="extracellular_glucose_flow" />
+</reaction>
+
+<reaction id="r3" name="glucose_transport_forward" use_enzyme="false" constant="1.6916e-2" >
+<input name="extracellular_glucose" />
+<output name="intracellular_glucose" />
+</reaction>
+-->
+<reaction id="r4" name="glucose_transport_reverse" use_enzyme="false" constant="1.6916e-2" outputTo="extracellar">
+<input name="intracellular_glucose" />
+<output name="extracellular_glucose" />
+</reaction>
+
+<reaction id="r5" name="Glc_to_G6P" use_enzyme="true" enzyme="hexokinase" constant="8.6257e-1" >
+<input name="intracellular_glucose" constant="0.01" />
+<input name="ATP" constant="0.1" />
+<output name="ADP" />
+<output name="glucose_6_phosphate" />
+</reaction>
+
+<reaction id="r6" name="G6P_to_F6P_forward" use_enzyme="true" enzyme="phosphoglucoisomerase" constant="8.2673e-3" >
+<input name="glucose_6_phosphate" constant="0.8" />
+<output name="fructose_6_phosphate" />
+</reaction>
+
+<reaction id="r7" name="G6P_to_F6P_reverse" use_enzyme="true" enzyme="phosphoglucoisomerase" constant="8.2673e-3" >
+<input name="fructose_6_phosphate" constant="0.15" />
+<output name="glucose_6_phosphate" />
+</reaction>
+
+<reaction id="r8" name="F6P_to_FBP" use_enzyme="true" enzyme="phosphofructokinase_1" constant="7.5721e-1" >
+<input name="fructose_6_phosphate" constant="0.021" />
+<input name="ATP" constant="0.15" />
+<output name="ADP" />
+<output name="fructose_1_6_bisphosphate" />
+</reaction>
+
+<reaction id="r9" name="FBP_to_GAP_forward" use_enzyme="true" enzyme="aldolase" constant="3.6797e-2" >
+<input name="fructose_1_6_bisphosphate" constant="0.3" />
+<output name="glyceraldehyde_3_phosphate" />
+<output name="dihydroxyacetone_phosphate" />
+</reaction>
+
+<reaction id="r10" name="FBP_to_GAP_reverse" use_enzyme="true" enzyme="aldolase" constant="1.8399e-1" >
+<input name="glyceraldehyde_3_phosphate" constant="4.0" />
+<input name="dihydroxyacetone_phosphate" constant="2.0" />
+<output name="fructose_1_6_bisphosphate" />
+</reaction>
+
+<reaction id="r11" name="DHAP_GAP_forward" use_enzyme="true" enzyme="triosephosphate_isomerase" constant="1.9394e-3" >
+<input name="dihydroxyacetone_phosphate" constant="1.23" />
+<output name="glyceraldehyde_3_phosphate" />
+</reaction>
+
+<reaction id="r12" name="DHAP_GAP_forward" use_enzyme="true" enzyme="triosephosphate_isomerase" constant="1.9394e-3" >
+<input name="glyceraldehyde_3_phosphate" constant="1.27" />
+<output name="dihydroxyacetone_phosphate" />
+</reaction>
+
+<reaction id="r13" name="GAP_to_BPG_forward" use_enzyme="true" enzyme="glyceraldehyde_3_phosphate_dehydrogenase" constant="1.3897" >
+<input name="glyceraldehyde_3_phosphate" constant="0.6" />
+<input name="NAD" constant="0.1" />
+<output name="bisphosphoglycerate_1_3" />
+<output name="NADH" />
+</reaction>
+
+<reaction id="r14" name="GAP_to_BPG_reverse" use_enzyme="true" enzyme="glyceraldehyde_3_phosphate_dehydrogenase" constant="1.3897e-3" >
+<input name="bisphosphoglycerate_1_3" constant="0.01" />
+<input name="NADH" constant="0.06" />
+<output name="glyceraldehyde_3_phosphate" />
+<output name="NAD" />
+</reaction>
+
+<reaction id="r15" name="BPG_to_PEP_forward" use_enzyme="false" constant="7.3977" >
+<input name="bisphosphoglycerate_1_3" />
+<input name="ADP" />
+<output name="phosphoenol_pyruvate" />
+<output name="ATP" />
+</reaction>
+
+<reaction id="r16" name="BPG_to_PEP_reverse" use_enzyme="false" constant="2.5477" >
+<input name="phosphoenol_pyruvate" />
+<input name="ATP" />
+<output name="bisphosphoglycerate_1_3" />
+<output name="ADP" />
+</reaction>
+
+<reaction id="r17" name="PEP_to_Pyr" use_enzyme="false" constant="5.7182e-3" >
+<input name="phosphoenol_pyruvate" constant="0.2" />
+<input name="ADP" constant="0.17" />
+<output name="pyruvate" />
+<output name="ATP" />
+</reaction>
+
+<reaction id="r18" name="Pyr_to_ACA" use_enzyme="true" enzyme="pyruvate_decarboxylase" constant="8.8554e-1" >
+<input name="pyruvate" constant="0.3" />
+<output name="intracellular_acetaldehyde" />
+</reaction>
+
+<reaction id="r19" name="ACA_to_EtOH" use_enzyme="true" enzyme="alcohol_dehydrogenase" constant="1.4967e-3" >
+<input name="intracellular_acetaldehyde" constant="0.71" />
+<input name="NADH" constant="0.1" />
+<output name="intracellular_ethanol" />
+<output name="NAD" />
+</reaction>
+
+<reaction id="r20" name="EtOH_transport_forward" use_enzyme="false" constant="2.7866e-1" outputTo="extracellar">
+<input name="intracellular_ethanol" />
+<output name="extracellular_ethanol" />
+</reaction>
+<!--
+<reaction id="r21" name="EtOH_transport_reverse" use_enzyme="false" constant="2.7866e-1" >
+<input name="extracellular_ethanol" />
+<output name="intracellular_ethanol" />
+</reaction>
+
+<reaction id="r22" name="extracellular_EtOH_diffusion" use_enzyme="false" constant="8.0E-7" >
+<input name="extracellular_ethanol" />
+<output name="empty" />
+</reaction>
+-->
+<reaction id="r23" name="DHAP_to_Glyc" use_enzyme="false" constant="1.3579E-5" >
+<input name="dihydroxyacetone_phosphate" />
+<input name="NADH" />
+<output name="intracellular_glycerol" />
+<output name="NAD" />
+</reaction>
+
+<reaction id="r24" name="glycerol_transport_forward" use_enzyme="false" constant="3.1666e-2" outputTo="extracellar">
+<input name="intracellular_glycerol" />
+<output name="extracellular_glycerol" />
+</reaction>
+<!--
+<reaction id="r25" name="glycerol_transport_reverse" use_enzyme="false" constant="3.1666e-2" >
+<input name="extracellular_glycerol" />
+<output name="intracellular_glycerol" />
+</reaction>
+
+<reaction id="r26" name="extracellular_glycerol_diffusion" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_glycerol" />
+<output name="empty" />
+</reaction>
+-->
+<reaction id="r27" name="acetaldehyde_transport_forward" use_enzyme="false" constant="4.1166e-1" outputTo="extracellar">
+<input name="intracellular_acetaldehyde" />
+<output name="extracellular_acetaldehyde" />
+</reaction>
+<!--
+<reaction id="r28" name="acetaldehyde_transport_reverse" use_enzyme="false" constant="4.1166e-1" >
+<input name="extracellular_acetaldehyde" />
+<output name="intracellular_acetaldehyde" />
+</reaction>
+
+<reaction id="r29" name="extracellular_acetaldehyde_diffusion" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_acetaldehyde" />
+<output name="empty" />
+</reaction>
+
+<reaction id="r30" name="lactonitrile_formation" use_enzyme="false" constant="4.7304e-2" >
+<input name="extracellular_acetaldehyde" />
+<input name="extracellular_CN" />
+<output name="empty" />
+</reaction>
+
+<reaction id="r31" name="Cyanid_flow_forward" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_CN" />
+<output name="extracellular_CN_flow" />
+</reaction>
+
+<reaction id="r32" name="Cyanid_flow_reverse" use_enzyme="false" constant="8.0E-4" >
+<input name="extracellular_CN_flow" />
+<output name="extracellular_CN" />
+</reaction>
+-->
+<reaction id="r33" name="storage" use_enzyme="false" constant="3.7655E-5" >
+<input name="glucose_6_phosphate" />
+<input name="ATP" />
+<output name="ADP" />
+</reaction>
+
+<reaction id="r34" name="consumption" use_enzyme="false" constant="5.3460e-2" >
+<input name="ATP" />
+<output name="ADP" />
+</reaction>
+
+<reaction id="r35" name="ATP_to_ADP" use_enzyme="false" constant="7.215e-3" >
+<input name="ATP" />
+<input name="AMP" />
+<output name="ADP" />
+<output name="ADP" />
+</reaction>
+
+<reaction id="r36" name="ADP_to_ATP" use_enzyme="false" constant="2.2222e-3" >
+<input name="ADP" />
+<input name="ADP" />
+<output name="ATP" />
+<output name="AMP" />
+</reaction>
+
+</partition>
+</system>

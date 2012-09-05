@@ -76,6 +76,7 @@ background: #EEE;
 	top: 0px;
 	align: center;
 	position: relative;
+	margin-left: 50px;
 }
 
 #parameters_fieldset
@@ -133,7 +134,7 @@ background: #EEE;
 {
 	width: 80%;
 	height: 500px;
-	top: 100px;
+	top: 200px;
 	align: center;
 	position: relative;
 	margin-left: 100px;

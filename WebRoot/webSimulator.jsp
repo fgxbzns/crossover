@@ -26,7 +26,7 @@
 		<%-- css --%>
 		<!--		<link href="http://i5-pc:8080/crossover/common.css" rel="stylesheet"-->
 		<!--			type="text/css" />-->
-		<link href="http://i3-540:8081/crossover/common.css" rel="stylesheet"
+		<link href="<%out.println(basePath);%>common.css" rel="stylesheet"
 			type="text/css" />
 
 	</head>
@@ -133,6 +133,16 @@
 			<%out.println(basePath + "webSimulator.jsp?fileName=lac");%>">Run
 							simulation</a>
 					</h4>
+<!--					<h4 align='left'>-->
+<!--						5. Glycolysis &nbsp-->
+<!--						<a href="" target='_blank'>Reactions</a> &nbsp-->
+<!--						<a href="<%out.println(basePath);%>models/glycolysis.xml" target='_blank'>XML</a>-->
+<!--						&nbsp-->
+<!--						<a-->
+<!--							href="-->
+<!--			<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run-->
+<!--							simulation</a>-->
+<!--					</h4>-->
 
 				</div>
 			</div>
@@ -191,7 +201,7 @@
 
 				//String xmlFile = basePath + fileName + ".xml";
 				//out.println(" basePath  is  " + basePath + "");
-				out.println(" modelDiskPath  is  " + modelDiskPath + "");
+				//out.println(" modelDiskPath  is  " + modelDiskPath + "");
 				//	out.println(" file path is  " + xmlFile + "");
 
 				Document doc = null;
@@ -385,75 +395,81 @@
 
 
 			<div id="parameters_div">
+				<h2 align="left">
+					Parameters setting
+				</h2>
 
 				<form name="myform" id="myForm" method="post"
 					action="webSimulator.jsp" onsubmit="return validate_form(this)">
-					<fieldset id="parameters_fieldset">
-						<legend>
-							Parameters setting
-						</legend>
+					<!--					<fieldset id="parameters_fieldset">-->
+					<!--						<legend>-->
+					<!--							Parameters setting-->
+					<!--						</legend>-->
 
-						<table class='parameters_table' cellpadding="3" cellspacing="3">
-							<tr>
-								<td>
-									<%
-										String message = "Please choose a model to test.";
-										if (system.getCurrentModel() != null) {
-											message = system.getCurrentModel();
-										}
-										out.print("Current Model is: &nbsp &nbsp " + message);
-									%>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									<%
-										out.print("Current simulation method is: &nbsp &nbsp "
-												+ system.getSimulationMethod());
-									%>
-								</td>
-							</tr>
-							<tr>
-								<td>
-									Total time (s):&nbsp &nbsp &nbsp
-									<input type="text" id="totalTime" name="totalTime"
-										value="<%out.print(system.getTotal());%>" size="30"
-										maxlength="10" tabindex="1" />
-								</td>
-							</tr>
 
-							<tr>
-								<td>
-									Number of points:
-									<input type="text" id="numOfPoints" name="numOfPoints"
-										value="<%out.print(system.getTotal() / system.getReportInterval());%>"
-										size="30" maxlength="10" tabindex="1" />
-								</td>
-							</tr>
 
-							<tr>
-								<td>
-									<input type="radio" name='simulationMethod'
-										value="deterministic""<%if (isDeterministic) {
+
+					<table class='parameters_table' cellpadding="3" cellspacing="3">
+						<tr>
+							<td>
+								<%
+									String message = "Please choose a model to test.";
+									if (system.getCurrentModel() != null) {
+										message = system.getCurrentModel();
+									}
+									out.print("Current Model is: &nbsp &nbsp " + message);
+								%>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								<%
+									out.print("Current simulation method is: &nbsp &nbsp "
+											+ system.getSimulationMethod());
+								%>
+							</td>
+						</tr>
+						<tr>
+							<td>
+								Total time (s):&nbsp &nbsp &nbsp
+								<input type="text" id="totalTime" name="totalTime"
+									value="<%out.print(system.getTotal());%>" size="30"
+									maxlength="10" tabindex="1" />
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								Number of points:
+								<input type="text" id="numOfPoints" name="numOfPoints"
+									value="<%out.print(system.getTotal() / system.getReportInterval());%>"
+									size="30" maxlength="10" tabindex="1" />
+							</td>
+						</tr>
+
+						<tr>
+							<td>
+								<input type="radio" name='simulationMethod'
+									value="deterministic""<%if (isDeterministic) {
 				out.print("checked");
 			}%>">
-									Deterministic
-									<input type="radio" name='simulationMethod' value="crossover""<%if (isCrossover) {
+								Deterministic
+								<input type="radio" name='simulationMethod' value="crossover""<%if (isCrossover) {
 				out.print("checked");
 			}%>">
-									Crossover
-								</td>
-							</tr>
+								Crossover
+							</td>
+						</tr>
 
-							<tr>
-								<td align="right">
-									<input type="submit" name="submit" value="Submit Change"
-										tabindex="4" />
-								</td>
-							</tr>
+						<tr>
+							<td align="right">
+								<input type="submit" name="submit" value="Submit Change"
+									tabindex="4" />
+							</td>
+						</tr>
 
-						</table>
-					</fieldset>
+					</table>
+					<!--					</fieldset>-->
 				</form>
 			</div>
 			<div id="result_div">
@@ -461,8 +477,7 @@
 
 
 				<%
-					resultFile = modelDiskPath + fileName + ".xls";
-					//out.println("" + time);
+					resultFile = basePath + "models/" + fileName + ".xls";
 
 					out
 							.println("<h4 align='left'>The simulation result can be downloaded <a href="
@@ -487,7 +502,9 @@
 						out.println("<td> Final value </td>");
 						out.println("<td> Display Graph </td>");
 						out.println("</tr>");
-
+						
+						reactantList = partitionList.get(m).getReactantList();
+						
 						for (int i = 0; i < reactantList.size(); i++) {
 							Reactant thisReactant = reactantList.get(i);
 							if (!thisReactant.getMy_chemical_name().equals("empty")
@@ -521,6 +538,7 @@
 
 							}
 						}
+						
 
 						out.println("</table><br><br>");
 					}

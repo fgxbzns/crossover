@@ -37,12 +37,13 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 		GlobalSystem system = GlobalSystem.getInstance();
 		int totalTime = system.getTotal(); // convert to second
 		int numOfPoints = 100;
-		if (system.getReportInterval() != 0 ) {
+		if (system.getReportInterval() != 0) {
 			numOfPoints = totalTime / system.getReportInterval();
 		}
 
-//		System.out.println("totalTime: " + totalTime);
-//		System.out.println("getReportInterval: " + system.getReportInterval());
+		// System.out.println("totalTime: " + totalTime);
+		// System.out.println("getReportInterval: " +
+		// system.getReportInterval());
 
 		ArrayList<Partition> partitionList = new ArrayList<Partition>();
 		ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
@@ -51,21 +52,24 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 		reactantList = partitionList.get(0).getReactantList();
 
 		String reactantToDisplay = "";
-		Reactant thisReactant  = reactantList.get(0);;
+		Reactant thisReactant = reactantList.get(0);
 
 		if (request.getParameter("reactantToDisplay") != null) {
-//			System.out.println("ok here 10");
+			// System.out.println("ok here 10");
 			reactantToDisplay = request.getParameter("reactantToDisplay");
-			for (int i = 0; i < reactantList.size(); i++) {
-				if (reactantToDisplay.equals(reactantList.get(i)
-						.getMy_chemical_name())) {
-					thisReactant = reactantList.get(i);
+			for (int m = 0; m < partitionList.size(); m++) {
+				reactantList = partitionList.get(m).getReactantList();
+				for (int i = 0; i < reactantList.size(); i++) {
+					if (reactantToDisplay.equals(reactantList.get(i)
+							.getMy_chemical_name())) {
+						thisReactant = reactantList.get(i);
+					}
 				}
 			}
 		}
-//		else {
-//			thisReactant = reactantList.get(0);
-//		}
+		// else {
+		// thisReactant = reactantList.get(0);
+		// }
 		try {
 			// From AxisChartServlet.java:init()
 			LegendProperties legendProperties = new LegendProperties();
@@ -97,7 +101,7 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 
 			String[] xAxisLabels = new String[numOfPoints];
 
-//			System.out.println("num of points: " + numOfPoints);
+			// System.out.println("num of points: " + numOfPoints);
 
 			// String[] xAxisLabels = { "1998", "1999", "2000", "2001",
 			// "2002", "2003", "2004" };
@@ -113,8 +117,9 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 
 			String xAxisTitle = "Time";
 			String yAxisTitle = "Reactant Number";
-			String title = "Simulation result for " + thisReactant.getMy_chemical_name();
-//			String title = "Simulation result for ";
+			String title = "Simulation result for "
+					+ thisReactant.getMy_chemical_name();
+			// String title = "Simulation result for ";
 			DataSeries dataSeries = new DataSeries(xAxisLabels, xAxisTitle,
 					yAxisTitle, title);
 
@@ -133,7 +138,7 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 			// data[ j ][ i ]=getRandomNumber( minValue, maxValue );
 			// }
 			// }
-			
+
 			double[][] data = new double[1][numOfPoints];
 			for (int j = 0; j < 1; j++) {
 				for (int i = 0; i < numOfPoints; i++) {
