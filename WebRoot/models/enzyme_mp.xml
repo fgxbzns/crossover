@@ -1,0 +1,39 @@
+<system time="0" timestep="0.001" total="100000" reportInterval ="1000">
+
+<partition name="part1" volume="0.000000000000001">
+<reactant name="S" number="100" chemostat="false"/>
+<reactant name="E" number="100" chemostat="false"/>
+<reactant name="SE" concentration="0" chemostat="false" outputTo="part2"/>
+
+<reaction id="binding" constant="0.01" >
+<input name="S" />
+<input name="E" />
+<output name="SE" />
+</reaction>
+
+<!-- <event id="e1" timePoint="50" targetName="E" targetProperty="number" action="changeTo" value="0" /> -->
+
+</partition>
+
+<partition name="part2" volume="0.000000000000001">
+
+<reactant name="S" number="0" chemostat="false" outputTo="part1"/>
+<reactant name="E" number="0" chemostat="false" outputTo="part1"/>
+<reactant name="SE" concentration="0" chemostat="false"/>
+<reactant name="P" concentration="0" chemostat="false"/>
+
+<reaction id="dissociation" constant="0.0001" >
+<input name="SE" />
+<output name="S" />
+<output name="E" />
+</reaction>
+
+<reaction id="conversion" constant="0.1" >
+<input name="SE" />
+<output name="P" />
+<output name="E" />
+</reaction>
+
+</partition>
+
+</system>

@@ -1,4 +1,4 @@
-<system time="0" timestep="10." total="100000" reportInterval ="100">
+<system time="0" timestep="10." total="100000" reportInterval ="1000">
 
 <partition name="extracellar" volume="0.000000000000001">
 

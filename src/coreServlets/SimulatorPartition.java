@@ -15,7 +15,7 @@ public class SimulatorPartition {
 		Document doc = null;
 		String firePath = "D:/project/cs_project/partition/";
 //		 String fileName = "dim"; //dimerization
-		 String fileName = "enzyme";
+		 String fileName = "enzyme_mp";
 //		 String fileName = "glycogen_1";
 //		 String fileName = "glycogen_2";
 //		 String fileName = "glycogen";
@@ -176,6 +176,13 @@ public class SimulatorPartition {
 					for (int m=0; m<system.getPartitions().size(); m++){
 						Partition currentPartion = system.getPartitions().get(m);
 						currentPartion.update();						
+					}
+					
+					//check for event
+					for (int m = 0; m < system.getPartitions().size(); m++) {
+						Partition currentPartion = system.getPartitions()
+								.get(m);
+						currentPartion.checkEvent(time, dt);
 					}
 					
 					

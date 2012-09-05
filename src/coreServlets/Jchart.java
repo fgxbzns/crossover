@@ -53,6 +53,8 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 
 		String reactantToDisplay = "";
 		Reactant thisReactant = reactantList.get(0);
+		boolean notFound = true; //same reactant is defined in mutiple partitions. 
+		// this works for enzyme_mp, but not for glycosis
 
 		if (request.getParameter("reactantToDisplay") != null) {
 			// System.out.println("ok here 10");
@@ -60,16 +62,15 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 			for (int m = 0; m < partitionList.size(); m++) {
 				reactantList = partitionList.get(m).getReactantList();
 				for (int i = 0; i < reactantList.size(); i++) {
-					if (reactantToDisplay.equals(reactantList.get(i)
+					if (notFound && reactantToDisplay.equals(reactantList.get(i)
 							.getMy_chemical_name())) {
 						thisReactant = reactantList.get(i);
+						notFound = false;
 					}
 				}
 			}
 		}
-		// else {
-		// thisReactant = reactantList.get(0);
-		// }
+
 		try {
 			// From AxisChartServlet.java:init()
 			LegendProperties legendProperties = new LegendProperties();

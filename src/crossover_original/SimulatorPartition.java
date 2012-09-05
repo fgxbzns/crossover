@@ -177,6 +177,12 @@ public class SimulatorPartition {
 						currentPartion.update();						
 					}
 					
+					for (int m = 0; m < system.getPartitions().size(); m++) {
+						Partition currentPartion = system.getPartitions()
+								.get(m);
+						currentPartion.checkEvent(time, dt);
+					}
+					
 					
 //					for (int k = 0; k < reactionList.size(); k++) {
 ////						reactionList.get(k).deterministic(dt, random);

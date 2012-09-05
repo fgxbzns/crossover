@@ -8,6 +8,7 @@
 	String basePath = request.getScheme() + "://"
 			+ request.getServerName() + ":" + request.getServerPort()
 			+ path + "/";
+	String servletPath = basePath + "servlet/coreServlets.";
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -95,7 +96,10 @@
 					</h2>
 					<h4 align='left'>
 						1. Michaelis-Menten enzyme kinetics &nbsp
-						<a href="" target='_blank'>Reactions</a>&nbsp
+						<a
+							href="
+			<%out.println(servletPath + "DisplayReactionList?fileName=enzyme");%>"
+							target='_blank'>Reactions</a>&nbsp
 						<a href="<%out.println(basePath);%>models/enzyme.xml"
 							target='_blank'>XML</a>&nbsp
 						<a
@@ -104,8 +108,23 @@
 							simulation</a>
 					</h4>
 					<h4 align='left'>
-						2. Auto-regulatory genetic network &nbsp
-						<a href="" target='_blank'>Reactions</a>&nbsp
+						2. Michaelis-Menten enzyme kinetics (Multiple Partition) &nbsp
+						<a
+							href="
+			<%out.println(servletPath + "DisplayReactionList?fileName=enzyme_mp");%>"
+							target='_blank'>Reactions</a>&nbsp
+						<a href="<%out.println(basePath);%>models/enzyme_mp.xml"
+							target='_blank'>XML</a>&nbsp
+						<a
+							href="
+			<%out.println(basePath + "webSimulator.jsp?fileName=enzyme_mp");%>">Run
+							simulation</a>
+					</h4>
+					<h4 align='left'>
+						3. Auto-regulatory genetic network &nbsp
+						<a
+							href="<%out.println(servletPath + "DisplayReactionList?fileName=autoReg");%>"
+							target='_blank'>Reactions</a>&nbsp
 						<a href="<%out.println(basePath);%>models/autoReg.xml"
 							target='_blank'>XML</a>&nbsp
 						<a
@@ -114,35 +133,50 @@
 							simulation</a>
 					</h4>
 					<h4 align='left'>
-						3. Dimerisation kinetics &nbsp
-						<a href="" target='_blank'>Reactions</a>&nbsp
-						<a href="<%out.println(basePath);%>models/dim.xml" target='_blank'>XML</a>
-						&nbsp
+						4. Auto-regulatory genetic network (Event example) &nbsp
+						<a
+							href="<%out
+					.println(servletPath
+							+ "DisplayReactionList?fileName=autoReg_ev");%>"
+							target='_blank'>Reactions</a>&nbsp
+						<a href="<%out.println(basePath);%>models/autoReg_ev.xml"
+							target='_blank'>XML</a>&nbsp
 						<a
 							href="
-			<%out.println(basePath + "webSimulator.jsp?fileName=dim");%>">Run
+			<%out.println(basePath + "webSimulator.jsp?fileName=autoReg_ev");%>">Run
 							simulation</a>
 					</h4>
+					<!--					<h4 align='left'>-->
+					<!--						3. Dimerisation kinetics &nbsp-->
+					<!--						<a href="" target='_blank'>Reactions</a>&nbsp-->
+					<!--						<a href="<%out.println(basePath);%>models/dim.xml" target='_blank'>XML</a>-->
+					<!--						&nbsp-->
+					<!--						<a-->
+					<!--							href="-->
+					<!--			<%out.println(basePath + "webSimulator.jsp?fileName=dim");%>">Run-->
+					<!--							simulation</a>-->
+					<!--					</h4>-->
+					<!--					<h4 align='left'>-->
+					<!--						4. lac operon &nbsp-->
+					<!--						<a href="" target='_blank'>Reactions</a> &nbsp-->
+					<!--						<a href="<%out.println(basePath);%>models/lac.xml" target='_blank'>XML</a>-->
+					<!--						&nbsp-->
+					<!--						<a-->
+					<!--							href="-->
+					<!--			<%out.println(basePath + "webSimulator.jsp?fileName=lac");%>">Run-->
+					<!--							simulation</a>-->
+					<!--					</h4>-->
 					<h4 align='left'>
-						4. lac operon &nbsp
-						<a href="" target='_blank'>Reactions</a> &nbsp
-						<a href="<%out.println(basePath);%>models/lac.xml" target='_blank'>XML</a>
-						&nbsp
+						5. Glycolysis &nbsp
+						<a href="<% out.println(servletPath
+							+ "DisplayReactionList?fileName=glycolysis");%>" target='_blank'>Reactions</a> &nbsp
+						<a href="<%out.println(basePath);%>models/glycolysis.xml"
+							target='_blank'>XML</a> &nbsp
 						<a
 							href="
-			<%out.println(basePath + "webSimulator.jsp?fileName=lac");%>">Run
+								<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run
 							simulation</a>
 					</h4>
-<!--					<h4 align='left'>-->
-<!--						5. Glycolysis &nbsp-->
-<!--						<a href="" target='_blank'>Reactions</a> &nbsp-->
-<!--						<a href="<%out.println(basePath);%>models/glycolysis.xml" target='_blank'>XML</a>-->
-<!--						&nbsp-->
-<!--						<a-->
-<!--							href="-->
-<!--			<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run-->
-<!--							simulation</a>-->
-<!--					</h4>-->
 
 				</div>
 			</div>
@@ -361,6 +395,13 @@
 										.get(m);
 								currentPartion.update();
 							}
+							//check for event
+							for (int m = 0; m < system.getPartitions().size(); m++) {
+								Partition currentPartion = system.getPartitions()
+										.get(m);
+								currentPartion.checkEvent(time, dt);
+							}
+
 							time += dt;
 						}
 						outputFile.write(time + "\t");
@@ -502,9 +543,9 @@
 						out.println("<td> Final value </td>");
 						out.println("<td> Display Graph </td>");
 						out.println("</tr>");
-						
+
 						reactantList = partitionList.get(m).getReactantList();
-						
+
 						for (int i = 0; i < reactantList.size(); i++) {
 							Reactant thisReactant = reactantList.get(i);
 							if (!thisReactant.getMy_chemical_name().equals("empty")
@@ -526,19 +567,20 @@
 								//		+ "</td>");
 								out.println("<td>"
 										+ "<a href='"
-										+ basePath
-										+ "webSimulator.jsp?reactantToDisplay="
+										//+ basePath
+										//+ "webSimulator.jsp?reactantToDisplay="
+										+ servletPath
+										+ "Jchart?reactantToDisplay="
 										+ thisReactant.getMy_chemical_name()
 										//+ "?totalTime=" + totalTime
 										//+ "?numOfPoints=" + totalTime/reportInterval
-										+ "'> Display "
+										+ "' target='_blank'> Display "
 										+ thisReactant.getMy_chemical_name()
 										+ "</a></td>");
 								out.println("</tr>");
 
 							}
 						}
-						
 
 						out.println("</table><br><br>");
 					}
@@ -546,7 +588,8 @@
 
 			</div>
 
-			<div id="graph_div">
+<!--			<div id="graph_div">-->
+			<div id="">
 
 
 				<!--				<img src="servlet/coreServlets.Jchart" alt="Simulation graph"-->
@@ -569,7 +612,7 @@
 						}
 
 					} else {
-						out.println("Please choose a reactant to display.");
+						//out.println("Please choose a reactant to display.");
 					}
 				%>
 
