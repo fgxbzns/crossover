@@ -26,7 +26,7 @@ import org.jCharts.encoders.JPEGEncoder13;
 import org.jCharts.properties.util.ChartFont;
 import org.jCharts.encoders.ServletEncoderHelper;
 
-public class Jchart extends javax.servlet.http.HttpServlet implements
+public class DisplayChartOri extends javax.servlet.http.HttpServlet implements
 		javax.servlet.Servlet {
 	static final long serialVersionUID = 1L;
 

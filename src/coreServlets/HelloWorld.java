@@ -9,5 +9,6 @@ public class HelloWorld extends HttpServlet {
       throws ServletException, IOException {
     PrintWriter out = response.getWriter();
     out.println("Hello World");
+    out.println("This is working");
   }
 }

@@ -27,12 +27,14 @@ import org.jCharts.encoders.JPEGEncoder13;
 import org.jCharts.properties.util.ChartFont;
 import org.jCharts.encoders.ServletEncoderHelper;
 
-public class Jchart extends javax.servlet.http.HttpServlet implements
+public class ChartDisplay extends javax.servlet.http.HttpServlet implements
 		javax.servlet.Servlet {
 	static final long serialVersionUID = 1L;
 
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
+		
+		PrintWriter out = response.getWriter();
 
 		GlobalSystem system = GlobalSystem.getInstance();
 		int totalTime = system.getTotal(); // convert to second
@@ -49,6 +51,7 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 		ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
 
 		partitionList = system.getPartitions();
+
 		reactantList = partitionList.get(0).getReactantList();
 
 		String reactantToDisplay = "";
@@ -70,6 +73,8 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 				}
 			}
 		}
+		
+		
 
 		try {
 			// From AxisChartServlet.java:init()
@@ -171,6 +176,7 @@ public class Jchart extends javax.servlet.http.HttpServlet implements
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+		
 
 	}
 

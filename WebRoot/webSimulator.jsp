@@ -570,7 +570,7 @@
 										//+ basePath
 										//+ "webSimulator.jsp?reactantToDisplay="
 										+ servletPath
-										+ "Jchart?reactantToDisplay="
+										+ "ChartDisplay?reactantToDisplay="
 										+ thisReactant.getMy_chemical_name()
 										//+ "?totalTime=" + totalTime
 										//+ "?numOfPoints=" + totalTime/reportInterval
@@ -601,7 +601,7 @@
 					if (request.getParameter("reactantToDisplay") != null) {
 						reactantToDisplay = request.getParameter("reactantToDisplay");
 						out
-								.println("<img src='servlet/coreServlets.Jchart?reactantToDisplay="
+								.println("<img src='servlet/coreServlets.ChartDisplay?reactantToDisplay="
 										+ reactantToDisplay
 										+ "' alt='Simulation graph' height='360' width='550' />");
 

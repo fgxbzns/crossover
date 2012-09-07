@@ -24,7 +24,7 @@ public class DisplayReactionList extends javax.servlet.http.HttpServlet
 				.println("<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0 Transitional//EN\"> \n"
 						+ "<HTML>\n"
 						+ "<HEAD>"
-						+ "<TITLE>Survey Report</TITLE>"
+						+ "<TITLE>Reaction List</TITLE>"
 						+ "<link href='http://i5-pc:8080/crossover/common.css' rel='stylesheet' type='text/css' />"
 						+ "</HEAD>\n"
 						+ "<font><strong><h1 align='center'>Crossover Algorithm</h1>"
