@@ -34,8 +34,6 @@ public class ChartDisplay extends javax.servlet.http.HttpServlet implements
 	protected void doGet(HttpServletRequest request,
 			HttpServletResponse response) throws ServletException, IOException {
 		
-		PrintWriter out = response.getWriter();
-
 		GlobalSystem system = GlobalSystem.getInstance();
 		int totalTime = system.getTotal(); // convert to second
 		int numOfPoints = 100;
@@ -73,7 +71,6 @@ public class ChartDisplay extends javax.servlet.http.HttpServlet implements
 				}
 			}
 		}
-		
 		
 
 		try {
