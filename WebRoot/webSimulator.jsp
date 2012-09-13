@@ -107,19 +107,19 @@
 			<%out.println(basePath + "webSimulator.jsp?fileName=enzyme");%>">Run
 							simulation</a>
 					</h4>
-					<h4 align='left'>
-						2. Michaelis-Menten enzyme kinetics (Multiple Partition) &nbsp
-						<a
-							href="
-			<%out.println(servletPath + "DisplayReactionList?fileName=enzyme_mp");%>"
-							target='_blank'>Reactions</a>&nbsp
-						<a href="<%out.println(basePath);%>models/enzyme_mp.xml"
-							target='_blank'>XML</a>&nbsp
-						<a
-							href="
-			<%out.println(basePath + "webSimulator.jsp?fileName=enzyme_mp");%>">Run
-							simulation</a>
-					</h4>
+<!--					<h4 align='left'>-->
+<!--						2. Michaelis-Menten enzyme kinetics (Multiple Partition) &nbsp-->
+<!--						<a-->
+<!--							href="-->
+<!--			<%out.println(servletPath + "DisplayReactionList?fileName=enzyme_mp");%>"-->
+<!--							target='_blank'>Reactions</a>&nbsp-->
+<!--						<a href="<%out.println(basePath);%>models/enzyme_mp.xml"-->
+<!--							target='_blank'>XML</a>&nbsp-->
+<!--						<a-->
+<!--							href="-->
+<!--			<%out.println(basePath + "webSimulator.jsp?fileName=enzyme_mp");%>">Run-->
+<!--							simulation</a>-->
+<!--					</h4>-->
 					<h4 align='left'>
 						3. Auto-regulatory genetic network &nbsp
 						<a
@@ -166,17 +166,17 @@
 					<!--			<%out.println(basePath + "webSimulator.jsp?fileName=lac");%>">Run-->
 					<!--							simulation</a>-->
 					<!--					</h4>-->
-					<h4 align='left'>
-						5. Glycolysis &nbsp
-						<a href="<% out.println(servletPath
-							+ "DisplayReactionList?fileName=glycolysis");%>" target='_blank'>Reactions</a> &nbsp
-						<a href="<%out.println(basePath);%>models/glycolysis.xml"
-							target='_blank'>XML</a> &nbsp
-						<a
-							href="
-								<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run
-							simulation</a>
-					</h4>
+<!--					<h4 align='left'>-->
+<!--						5. Glycolysis &nbsp-->
+<!--						<a href="<% out.println(servletPath+ "DisplayReactionList?fileName=glycolysis");%>-->
+<!--							" target='_blank'>Reactions</a> &nbsp-->
+<!--						<a href="<%out.println(basePath);%>models/glycolysis.xml"-->
+<!--							target='_blank'>XML</a> &nbsp-->
+<!--						<a-->
+<!--							href="-->
+<!--								<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run-->
+<!--							simulation</a>-->
+<!--					</h4>-->
 
 				</div>
 			</div>
