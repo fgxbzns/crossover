@@ -1,111 +1,99 @@
-*
-{
-    margin: 5;
-    padding: 5;
-    border: 1;
+* {
+	margin: 5;
+	padding: 5;
+	border: 1;
 }
 
-body
-{
-    font-family: Arial, Helvetica, sans-serif;
-    font-size: 18px;
-    line-height: 20px;
-    #background: url( '../images/background.jpg' );
-    background-color: White;
-    text-align: center;
-    background: #EEE;
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	font-size: 18px;
+	line-height: 20px; #
+	background: url( '../images/background.jpg' );
+	background-color: White;
+	text-align: center;
+	background: #EEE;
 }
 
-#mainboard
-{
-    width: 1000px;
-    height: auto;
-    margin: auto;
-    position: relative;
-    background-color: White;
-    align: center;
+#mainboard {
+	width: 1000px;
+	height: auto;
+	margin: auto;
+	position: relative;
+	background-color: White;
+	align: center;
 }
 
 #introduction {
-width: 90%;
-height: 480px;
-position: relative;
-top: 0px;
-left: 0px;
-background: #EEE;
-}
-
-#introduction_text
-{
-    width: 90%;
-    height: 480px;
-    margin-left: 50px;
-    margin-top: 10px;
-    text-align: justify;
-    vertical-align: middle;
-    font-size: 16px;
-    position: relative;
-}
-
-#model_example
-{
-	width: 80%;
-	height: 200px;
-	align: center;
-	position: relative;
-	background: #EEE;	
-}
-
-#model_text
-{
-	width: 80%;
-    height: 100px;
-    margin-left: 50px;
-    margin-top: 0px;
-    text-align: justify;
-    vertical-align: middle;
-    font-size: 16px;
-    position: relative;
-    
-}
-	
-#parameters_div
-{
-	width: 60%;
-	height: 300px;
-	top: 0px;
-	align: center;
-	position: relative;
-	margin-left: 50px;
-}
-
-#parameters_fieldset
-{
-	width: 80%;
-	margin-left: 50px;
-	position: relative;
-}
-
-.parameters_table
-{
-	color: balck;
 	width: 90%;
+	position: relative;
+	top: 0px;
+	left: 0px;
+	background: #EEE;
+}
+
+#introduction_text {
+	width: 90%;
+	margin-left: 50px;
+	margin-top: 10px;
+	text-align: justify;
+	vertical-align: middle;
+	font-size: 16px;
+	position: relative;
+}
+
+#model_div {
+	width: 80%;
+	margin-left: 50px;
+	position: relative;
+}
+
+#model_text {
+	width: 80%;
+	margin-top: -30px;
+	text-align: justify;
+	vertical-align: middle;
+	font-size: 16px;
+	position: relative;
+}
+
+#upload_div {
+	width: 80%;
+	margin-left: 50px;
+	position: relative;
+}
+
+#parameters_div {
+	width: 60%;
+	height: 280px;
+	top: 0px;
+	align: left;
+	position: relative;
+	margin-left: 50px;
+}
+
+#parameters_fieldset {
+	width: 80%;
+	margin-left: 50px;
+	position: relative;
+}
+
+.parameters_table {
+	color: balck;
+	width: 60%;
 	align: center;
 	position: relative;
 	margin-left: 50px;
 }
 
-.parameters_table tr
-{
-	background-color:white;
-	font:bold 12pt verdana;
-	text-decoration:none;
+.parameters_table tr {
+	background-color: white;
+	font: bold 12pt verdana;
+	text-decoration: none;
 	text-align: left;
 	background: #EEE;
 }
 
-#result_div
-{
+#result_div {
 	width: 80%;
 	height: 300px;
 	top: 50px;
@@ -114,24 +102,21 @@ background: #EEE;
 	margin-left: 50px;
 }
 
-.result_table
-{
+.result_table {
 	color: balck;
 	width: 80%;
 	align: center;
 	border: 1;
 }
 
-.result_table tr
-{
-	background-color:white;
-	font:bold 12pt verdana;
-	text-decoration:none;
-	text-align: center;		
+.result_table tr {
+	background-color: white;
+	font: bold 12pt verdana;
+	text-decoration: none;
+	text-align: center;
 }
 
-#graph_div
-{
+#graph_div {
 	width: 80%;
 	height: 500px;
 	top: 200px;
@@ -139,9 +124,3 @@ background: #EEE;
 	position: relative;
 	margin-left: 100px;
 }
-
-
-
-
-
-

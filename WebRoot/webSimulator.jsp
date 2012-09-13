@@ -84,12 +84,39 @@
 							Support system event during simulation
 						</li>
 					</p>
+					<h2>
+						Instructions:
+					</h2>
+					<li>
+						Click "Run simulation" to select different models
+					</li>
+					<li>
+						Adjust "Total steps" (1000 steps = 1 second) and "Number of
+						points" (to be displayed in graph) if you want to
+					</li>
+					<li>
+						Simulation method can be set as "deterministic" or "crossover"
+					</li>
+					<li>
+						The simulation result is saved as ".xls" file and can be
+						downloaded from the link
+					</li>
+					<li>
+						Click the "Display" link to view the result for each reactant.
+					</li>
+					<li>
+						This web application is still under development. More features are
+						coming. If you see any problems, or have any comments, please send
+						them to
+						<a href="mailto:guoxingfu.gsu@gmail.com">
+							guoxingfu.gsu@gmail.com</a> Thank you!
+					</li>
 					<br />
 				</div>
 
 			</div>
 
-			<div id="model_example">
+			<div id="model_div">
 				<div id="model_text">
 					<h2>
 						Model examples:
@@ -166,21 +193,34 @@
 					<!--			<%out.println(basePath + "webSimulator.jsp?fileName=lac");%>">Run-->
 					<!--							simulation</a>-->
 					<!--					</h4>-->
-					<h4 align='left'>
-						5. Glycolysis &nbsp
-						<a href="<% out.println(servletPath
-							+ "DisplayReactionList?fileName=glycolysis");%>" target='_blank'>Reactions</a> &nbsp
-						<a href="<%out.println(basePath);%>models/glycolysis.xml"
-							target='_blank'>XML</a> &nbsp
-						<a
-							href="
-								<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run
-							simulation</a>
-					</h4>
+					<!--					<h4 align='left'>-->
+					<!--						5. Glycolysis &nbsp-->
+					<!--						<a href="<%out
+					.println(servletPath
+							+ "DisplayReactionList?fileName=glycolysis");%>-->
+					<!--							" target='_blank'>Reactions</a> &nbsp -->
+					<!--						<a href="<%out.println(basePath);%>models/glycolysis.xml"-->
+					<!--							target='_blank'>XML</a> &nbsp-->
+					<!--						<a-->
+					<!--							href="-->
+					<!--								<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run-->
+					<!--							simulation</a>-->
+					<!--					</h4>-->
+					
+					
+					
+					<form  method="post" action="<%out.println(servletPath+"UploadServlet");%>"
+					enctype="multipart/form-data">
+					Select file to upload:
+					<input type="file" name="dataFile" id="fileChooser" />
+					<input type="submit" value="Upload" style="font-size: 18px; color: blue"/>
+				</form>
+		
 
 				</div>
 			</div>
-
+			
+	
 
 			<%
 				String fileName = "";
@@ -472,7 +512,7 @@
 						</tr>
 						<tr>
 							<td>
-								Total time (s):&nbsp &nbsp &nbsp
+								Total steps (s):&nbsp &nbsp &nbsp
 								<input type="text" id="totalTime" name="totalTime"
 									value="<%out.print(system.getTotal());%>" size="30"
 									maxlength="10" tabindex="1" />
@@ -505,7 +545,7 @@
 						<tr>
 							<td align="right">
 								<input type="submit" name="submit" value="Submit Change"
-									tabindex="4" />
+									tabindex="4" style="font-size: 18px; color: blue" />
 							</td>
 						</tr>
 
@@ -588,7 +628,7 @@
 
 			</div>
 
-<!--			<div id="graph_div">-->
+			<!--			<div id="graph_div">-->
 			<div id="">
 
 
