@@ -4,6 +4,18 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Reads {
+	
+	private String identifier;
+	private int length;
+	private String xy;
+	private String region;
+	private String run;
+
+	private ArrayList<String> quality_score;
+	private double average_quality_score;
+	private Boolean with_primer;
+	private Boolean with_adapter;
+	
 
 	public String getIdentifier() {
 		return identifier;
@@ -77,16 +89,7 @@ public class Reads {
 		with_adapter = withAdapter;
 	}
 
-	private String identifier;
-	private int length;
-	private String xy;
-	private String region;
-	private String run;
-
-	private ArrayList<String> quality_score;
-	private double average_quality_score;
-	private Boolean with_primer;
-	private Boolean with_adapter;
+	
 
 	public void get_quality_score_avage() {
 		int sum = 0;

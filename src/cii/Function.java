@@ -13,6 +13,7 @@ import java.lang.Object;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Scanner;
 
 import org.w3c.dom.Node;
 
@@ -63,235 +64,325 @@ public class Function {
 //	}
 
 	// get partition information. 
-	public static void getPartitionList(Document doc) throws Exception {
+	public static void getPartitionList(String input_file) throws Exception {
 		
-		NodeList partationNode = doc.getElementsByTagName("partition");
-				
-		ArrayList<Reads> readList = new ArrayList<Reads>();
+//		File file = new File(input_file);
+//	    FileInputStream fis = null;
+//	    BufferedInputStream bis = null;
+//	    DataInputStream dis = null;
+
 		
-		for (int i = 0; i < partationNode.getLength(); i++) {
-			Element partitionElement = (Element) partationNode.item(i);
-			String partitionName = partitionElement.getAttribute("name");
-			float volume = Float.valueOf(partitionElement.getAttribute("volume"));
+//		try {
+//		      fis = new FileInputStream(file);
+//
+//		      // Here BufferedInputStream is added for fast reading.
+//		      bis = new BufferedInputStream(fis);
+//		      dis = new DataInputStream(bis);
+//
+//		      // dis.available() returns 0 if the file does not have more lines.
+//		      while (dis.available() != 0) {
+//
+//		      // this statement reads the line from the file and print it to
+//		        // the console.
+//		        System.out.println(dis.readLine());
+//		      }
+//
+//		      // dispose all the resources after using them.
+//		      fis.close();
+//		      bis.close();
+//		      dis.close();
+//
+//		    } catch (FileNotFoundException e) {
+//		      e.printStackTrace();
+//		    } catch (IOException e) {
+//		      e.printStackTrace();
+//		    }
+	/*	    
+		    try {
+		        BufferedReader in = new BufferedReader(new FileReader(input_file));
+		        String str;
+		        while ((str = in.readLine()) != null) {
+		        	 System.out.println(str);
+		        	 
+		        }
+		        in.close();
+		    } catch (FileNotFoundException e) {
+		      e.printStackTrace();
+		    } catch (IOException e) {
+		      e.printStackTrace();
+		    }
+		*/    
+		
+		
+		
+		 String identifier;
+		 int length;
+		 String xy;
+		 String region;
+		 String run;
+		
+		
+		    Scanner reader = new Scanner(System.in); 
+			Scanner fileInput = null;
+			ArrayList<Reads> readsList = new ArrayList<Reads>();
 			
-			Partition aPartition = new Partition();
-			aPartition.setPartitionName(partitionName);
-			aPartition.setVolume(volume);
-					
-//			System.out.println(partitionName);
-//			System.out.println(volume);
-	
-			// get reactants in current partition
-			NodeList reactantNode = partitionElement.getElementsByTagName("reactant");
-			ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
-			for (int j = 0; j < reactantNode.getLength(); j++) {
-				Element reactantElement = (Element) reactantNode.item(j);
-				
-				String reactantName = reactantElement.getAttribute("name");
-				String number = reactantElement.getAttribute("number");
-				String concentration = reactantElement.getAttribute("concentration");
-				String chemostat = reactantElement.getAttribute("chemostat");
-				String is_enzyme;
-				is_enzyme = reactantElement.getAttribute("is_enzyme");
-				
-				if (is_enzyme != ""){
-					is_enzyme = reactantElement.getAttribute("is_enzyme");
-				} else {
-					is_enzyme = "false"; 
-				}
-
-				String outputTo = reactantElement.getAttribute("outputTo");
-				
-//				System.out.println(reactantName);
-				
-				if (notContain(reactantList, reactantName)) {
-					Reactant aReactant = new Reactant();
-					aReactant.setMy_chemical_name(reactantName);
-					
-	// temporary volume, need to remove
-					double tVolume = 1.0e-20; 
-					
-					aReactant.setVolume(tVolume); //get volume from partition
-									
-					//check whether number of concentration is available
-					if (number != ""){
-						aReactant.setNumber(Integer.valueOf(number));
-						aReactant.setInitial_number(Integer.valueOf(number));
-						aReactant.setConcentrationByNumber();					
-					} else if (concentration != "") {
-						aReactant.setMy_concentration(Double.valueOf(concentration));
-						aReactant.setNumberByConcentration();
-						aReactant.setInitialNumberByConcentration();
-//						System.out.println("cons is "+Double.valueOf(concentration));
-					} else {
-						System.out.println("Number or concentration must be defined for ractant "
-								+ reactantName);
-						System.exit(0);		
-					}
-					
-					if (outputTo != ""){
-						outputTo = reactantElement.getAttribute("outputTo");
-					} else {
-						outputTo = partitionName; // default ouput is its current partation
-					}
-					
-					aReactant.setOutputTo(outputTo);
-					
-					aReactant.setChemostat(Boolean.valueOf(chemostat));
-					aReactant.setIs_enzyme(Boolean.valueOf(is_enzyme));
-					reactantList.add(aReactant);
-				}
-			}	
-			
-			// add reactant list to current partation
-			aPartition.setReactantList(reactantList);  
-			
-			// get reactions in current partition
-			NodeList reactionNode = partitionElement.getElementsByTagName("reaction");
-			ArrayList<Reaction> reactionList = new ArrayList<Reaction>();
-			
-//			System.out.println("there are "+reactionNode.getLength()+" reactions");
-
-			for (int j = 0; j < reactionNode.getLength(); j++) {
-				Reaction aReaction = new Reaction();
-
-				ArrayList<Reactant> input_species = new ArrayList<Reactant>();
-				ArrayList<Reactant> output_species = new ArrayList<Reactant>();
-				ArrayList<Float> affinities = new ArrayList<Float>();
-				
-				String reactionID;
-				String reactionName;
-				
-				Reactant enzyme = new Reactant();;
-				String enzymeName;
-				
-				float rate_constant;
-				double enzyme_concentration = 0;
-				
-				// Reactant enzyme;
-				boolean use_enzyme = false;  // default value is false
-				
-				Element reactionElement = (Element) reactionNode.item(j);
-				reactionID = reactionElement.getAttribute("id");
-				reactionName = reactionElement.getAttribute("name");
-				rate_constant = Float.valueOf(reactionElement
-						.getAttribute("constant"));
-				
-				use_enzyme = Boolean.valueOf(reactionElement
-						.getAttribute("use_enzyme"));
-//				System.out.println(reactionID+" rate is "+ rate_constant);
-				
-				if (use_enzyme){				
-					enzymeName = reactionElement.getAttribute("enzyme");
-//					System.out.println(reactionID+" enzyme is "+ enzymeName);
-					enzyme = getEnzyme(reactantList, enzymeName);
-//					System.out.println(reactionID+" enzyme is "+ enzyme.getMy_chemical_name());
-					enzyme_concentration = enzyme.getMy_concentration();	
-				}
-	
-//				if (!reactionElement.getAttribute("concentration").equals("") ) {
-//					System.out.println("null");
-//					enzyme_concentration = Float.valueOf(reactionElement
-//						.getAttribute("concentration"));
-//				} else 
-//					enzyme_concentration = (float) 1.0;
-
-
-				// get input_species, check if it is in the defined species.
-				NodeList inputNode = reactionElement.getElementsByTagName("input");
-				for (int k = 0; k < inputNode.getLength(); k++) {
-					Element inputElement = (Element) inputNode.item(k);
-					String inputName = inputElement.getAttribute("name");
-					// System.out.println(inputName);
-					Reactant thisReactant = validateReaction(reactantList,
-							inputName);
-					if (use_enzyme) {
-						affinities.add(Float.valueOf(inputElement
-								.getAttribute("constant")));
-					}
-					input_species.add(thisReactant);
-					
-//					System.out.println(inputName);
-//					System.out.println(Float.valueOf(inputElement
-//							.getAttribute("constant")));
-					
-				}
-
-				// get output_species
-				NodeList outputNode = reactionElement
-						.getElementsByTagName("output");
-				for (int k = 0; k < outputNode.getLength(); k++) {
-					Element outputElement = (Element) outputNode.item(k);
-					String outputName = outputElement.getAttribute("name");
-					Reactant thisReactant = validateReaction(reactantList,
-							outputName);
-					output_species.add(thisReactant);
-				}
-
-				aReaction.setId(reactionID);
-				aReaction.setName(reactionName);
-				aReaction.setInput_species(input_species);
-				aReaction.setOutput_species(output_species);
-				
-				aReaction.setRate_constant(rate_constant);
-				aReaction.setUse_enzyme(use_enzyme);
-				if (use_enzyme) {
-					aReaction.setEnzyme(enzyme);
-					aReaction.setEnzyme_concentration(enzyme_concentration);
-					aReaction.setAffinities(affinities);
-				}
-
-//				 System.out.println(input_species.size());
-//				 System.out.println(output_species.get(0).getMy_chemical_name());
-//				 System.out.println(use_enzyme);
-				reactionList.add(aReaction);
-			}
-			
-			// add reaction list to current partation
-			aPartition.setReactionList(reactionList);  	
-			
-			// get event list
-			NodeList eventNode = partitionElement.getElementsByTagName("event");
-			ArrayList<Event> eventList = new ArrayList<Event>();
-			
-
-			for (int j = 0; j < eventNode.getLength(); j++) {
-				
-				String eventID;
-				float timePoint;
-				String targetName;
-				String targetProperty;
-				String action;
-				double value;
-				
-				Event anEvent = new Event();
-	
-				Element eventElement = (Element) eventNode.item(j);
-				eventID = eventElement.getAttribute("id");
-				timePoint = Float.valueOf(eventElement
-						.getAttribute("timePoint"));
-				targetName = eventElement.getAttribute("targetName");
-				targetProperty = eventElement.getAttribute("targetProperty");
-				action = eventElement.getAttribute("action");				
-				value = Double.valueOf(eventElement
-						.getAttribute("value"));
-
-				anEvent.setEventID(eventID);
-				anEvent.setTimePoint(timePoint);
-				anEvent.setTargetName(targetName);
-				anEvent.setTargetProperty(targetProperty);
-				anEvent.setAction(action);
-				anEvent.setValue(value);	
-				
-				eventList.add(anEvent);
-			}
-			
-			// add event list to current partation
-			aPartition.setEventList(eventList); 
-			
-			partitionList.add(aPartition);
-		}
-		GlobalSystem.getInstance().setPartitions(partitionList);
+		    try{
+				File file = new File(input_file);
+				fileInput = new Scanner (file);
+				}catch(Exception e){
+				System.out.println ("File not found. Please try again.");
+				System.exit(0);}		
+		   
+			if (fileInput.hasNext()){
+				while (fileInput.hasNext()) {
+				 do{identifier = fileInput.next();	
+				 
+				 length = Integer.parseInt( fileInput.next() );
+				 xy = fileInput.next();
+				 region = fileInput.next();
+				 run = fileInput.next();
+				 
+				 Reads current_read = new Reads();
+				 current_read
+						
+					} while (fileInput.next().equals('#'));}	}
+			else {System.out.println("The file is empty, please try again.");
+				System.exit(1); }
+		
+		
+		
+		
+		
+		
+		
+		
+//		NodeList partationNode = doc.getElementsByTagName("partition");
+//				
+//		ArrayList<Reads> readList = new ArrayList<Reads>();
+//		
+//		for (int i = 0; i < partationNode.getLength(); i++) {
+//			Element partitionElement = (Element) partationNode.item(i);
+//			String partitionName = partitionElement.getAttribute("name");
+//			float volume = Float.valueOf(partitionElement.getAttribute("volume"));
+//			
+//			Partition aPartition = new Partition();
+//			aPartition.setPartitionName(partitionName);
+//			aPartition.setVolume(volume);
+//					
+////			System.out.println(partitionName);
+////			System.out.println(volume);
+//	
+//			// get reactants in current partition
+//			NodeList reactantNode = partitionElement.getElementsByTagName("reactant");
+//			ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
+//			for (int j = 0; j < reactantNode.getLength(); j++) {
+//				Element reactantElement = (Element) reactantNode.item(j);
+//				
+//				String reactantName = reactantElement.getAttribute("name");
+//				String number = reactantElement.getAttribute("number");
+//				String concentration = reactantElement.getAttribute("concentration");
+//				String chemostat = reactantElement.getAttribute("chemostat");
+//				String is_enzyme;
+//				is_enzyme = reactantElement.getAttribute("is_enzyme");
+//				
+//				if (is_enzyme != ""){
+//					is_enzyme = reactantElement.getAttribute("is_enzyme");
+//				} else {
+//					is_enzyme = "false"; 
+//				}
+//
+//				String outputTo = reactantElement.getAttribute("outputTo");
+//				
+////				System.out.println(reactantName);
+//				
+//				if (notContain(reactantList, reactantName)) {
+//					Reactant aReactant = new Reactant();
+//					aReactant.setMy_chemical_name(reactantName);
+//					
+//	// temporary volume, need to remove
+//					double tVolume = 1.0e-20; 
+//					
+//					aReactant.setVolume(tVolume); //get volume from partition
+//									
+//					//check whether number of concentration is available
+//					if (number != ""){
+//						aReactant.setNumber(Integer.valueOf(number));
+//						aReactant.setInitial_number(Integer.valueOf(number));
+//						aReactant.setConcentrationByNumber();					
+//					} else if (concentration != "") {
+//						aReactant.setMy_concentration(Double.valueOf(concentration));
+//						aReactant.setNumberByConcentration();
+//						aReactant.setInitialNumberByConcentration();
+////						System.out.println("cons is "+Double.valueOf(concentration));
+//					} else {
+//						System.out.println("Number or concentration must be defined for ractant "
+//								+ reactantName);
+//						System.exit(0);		
+//					}
+//					
+//					if (outputTo != ""){
+//						outputTo = reactantElement.getAttribute("outputTo");
+//					} else {
+//						outputTo = partitionName; // default ouput is its current partation
+//					}
+//					
+//					aReactant.setOutputTo(outputTo);
+//					
+//					aReactant.setChemostat(Boolean.valueOf(chemostat));
+//					aReactant.setIs_enzyme(Boolean.valueOf(is_enzyme));
+//					reactantList.add(aReactant);
+//				}
+//			}	
+//			
+//			// add reactant list to current partation
+//			aPartition.setReactantList(reactantList);  
+//			
+//			// get reactions in current partition
+//			NodeList reactionNode = partitionElement.getElementsByTagName("reaction");
+//			ArrayList<Reaction> reactionList = new ArrayList<Reaction>();
+//			
+////			System.out.println("there are "+reactionNode.getLength()+" reactions");
+//
+//			for (int j = 0; j < reactionNode.getLength(); j++) {
+//				Reaction aReaction = new Reaction();
+//
+//				ArrayList<Reactant> input_species = new ArrayList<Reactant>();
+//				ArrayList<Reactant> output_species = new ArrayList<Reactant>();
+//				ArrayList<Float> affinities = new ArrayList<Float>();
+//				
+//				String reactionID;
+//				String reactionName;
+//				
+//				Reactant enzyme = new Reactant();;
+//				String enzymeName;
+//				
+//				float rate_constant;
+//				double enzyme_concentration = 0;
+//				
+//				// Reactant enzyme;
+//				boolean use_enzyme = false;  // default value is false
+//				
+//				Element reactionElement = (Element) reactionNode.item(j);
+//				reactionID = reactionElement.getAttribute("id");
+//				reactionName = reactionElement.getAttribute("name");
+//				rate_constant = Float.valueOf(reactionElement
+//						.getAttribute("constant"));
+//				
+//				use_enzyme = Boolean.valueOf(reactionElement
+//						.getAttribute("use_enzyme"));
+////				System.out.println(reactionID+" rate is "+ rate_constant);
+//				
+//				if (use_enzyme){				
+//					enzymeName = reactionElement.getAttribute("enzyme");
+////					System.out.println(reactionID+" enzyme is "+ enzymeName);
+//					enzyme = getEnzyme(reactantList, enzymeName);
+////					System.out.println(reactionID+" enzyme is "+ enzyme.getMy_chemical_name());
+//					enzyme_concentration = enzyme.getMy_concentration();	
+//				}
+//	
+////				if (!reactionElement.getAttribute("concentration").equals("") ) {
+////					System.out.println("null");
+////					enzyme_concentration = Float.valueOf(reactionElement
+////						.getAttribute("concentration"));
+////				} else 
+////					enzyme_concentration = (float) 1.0;
+//
+//
+//				// get input_species, check if it is in the defined species.
+//				NodeList inputNode = reactionElement.getElementsByTagName("input");
+//				for (int k = 0; k < inputNode.getLength(); k++) {
+//					Element inputElement = (Element) inputNode.item(k);
+//					String inputName = inputElement.getAttribute("name");
+//					// System.out.println(inputName);
+//					Reactant thisReactant = validateReaction(reactantList,
+//							inputName);
+//					if (use_enzyme) {
+//						affinities.add(Float.valueOf(inputElement
+//								.getAttribute("constant")));
+//					}
+//					input_species.add(thisReactant);
+//					
+////					System.out.println(inputName);
+////					System.out.println(Float.valueOf(inputElement
+////							.getAttribute("constant")));
+//					
+//				}
+//
+//				// get output_species
+//				NodeList outputNode = reactionElement
+//						.getElementsByTagName("output");
+//				for (int k = 0; k < outputNode.getLength(); k++) {
+//					Element outputElement = (Element) outputNode.item(k);
+//					String outputName = outputElement.getAttribute("name");
+//					Reactant thisReactant = validateReaction(reactantList,
+//							outputName);
+//					output_species.add(thisReactant);
+//				}
+//
+//				aReaction.setId(reactionID);
+//				aReaction.setName(reactionName);
+//				aReaction.setInput_species(input_species);
+//				aReaction.setOutput_species(output_species);
+//				
+//				aReaction.setRate_constant(rate_constant);
+//				aReaction.setUse_enzyme(use_enzyme);
+//				if (use_enzyme) {
+//					aReaction.setEnzyme(enzyme);
+//					aReaction.setEnzyme_concentration(enzyme_concentration);
+//					aReaction.setAffinities(affinities);
+//				}
+//
+////				 System.out.println(input_species.size());
+////				 System.out.println(output_species.get(0).getMy_chemical_name());
+////				 System.out.println(use_enzyme);
+//				reactionList.add(aReaction);
+//			}
+//			
+//			// add reaction list to current partation
+//			aPartition.setReactionList(reactionList);  	
+//			
+//			// get event list
+//			NodeList eventNode = partitionElement.getElementsByTagName("event");
+//			ArrayList<Event> eventList = new ArrayList<Event>();
+//			
+//
+//			for (int j = 0; j < eventNode.getLength(); j++) {
+//				
+//				String eventID;
+//				float timePoint;
+//				String targetName;
+//				String targetProperty;
+//				String action;
+//				double value;
+//				
+//				Event anEvent = new Event();
+//	
+//				Element eventElement = (Element) eventNode.item(j);
+//				eventID = eventElement.getAttribute("id");
+//				timePoint = Float.valueOf(eventElement
+//						.getAttribute("timePoint"));
+//				targetName = eventElement.getAttribute("targetName");
+//				targetProperty = eventElement.getAttribute("targetProperty");
+//				action = eventElement.getAttribute("action");				
+//				value = Double.valueOf(eventElement
+//						.getAttribute("value"));
+//
+//				anEvent.setEventID(eventID);
+//				anEvent.setTimePoint(timePoint);
+//				anEvent.setTargetName(targetName);
+//				anEvent.setTargetProperty(targetProperty);
+//				anEvent.setAction(action);
+//				anEvent.setValue(value);	
+//				
+//				eventList.add(anEvent);
+//			}
+//			
+//			// add event list to current partation
+//			aPartition.setEventList(eventList); 
+//			
+//			partitionList.add(aPartition);
+//		}
+//		GlobalSystem.getInstance().setPartitions(partitionList);
 	}
 	
 //	public static Reactant getEnzyme(ArrayList<Reactant> reactantList,

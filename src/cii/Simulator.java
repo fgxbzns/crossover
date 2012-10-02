@@ -13,15 +13,17 @@ public class Simulator {
 	public static void main(String argv[]) throws Exception {
 
 		Document doc = null;
-		String firePath = "D:/project/cs_project/";
-		String fileName = "glycolysis";
+		String firePath = "D:/Dropbox/hm_share/green card/work/Columbia University/test/";
+		String fileName = "bioinformatics_test";
 		 
-		String xmlFile = firePath + fileName + ".xml";
-		doc = Function.getDocument(xmlFile);
+		String fnaFile = firePath + fileName + ".fna";
+//		doc = Function.getDocument(xmlFile);
 		
 		ArrayList<Reads> partitionList = new ArrayList<Reads>();
+		
+		Function.getPartitionList(fnaFile);
 	
-		Function.getGlobalSystem(doc);
+//		Function.getGlobalSystem(doc);
 
 		// get partition with its reactants and reactions
 //		Function.getPartitionList(doc);

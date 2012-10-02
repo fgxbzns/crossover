@@ -1,4 +1,4 @@
-<%@ page import="java.awt.*,org.jChart.*,org.jCharts.chartData.*,org.jCharts.properties.*,org.jCharts.types.ChartType,org.jCharts.axisChart.*,org.jCharts.test.TestDataGenerator,org.jCharts.encoders.JPEGEncoder13,org.jCharts.properties.util.ChartFont,
+<%@ page import="java.awt.*,org.jCharts.chartData.*,org.jCharts.properties.*,org.jCharts.types.ChartType,org.jCharts.axisChart.*,org.jCharts.test.TestDataGenerator,org.jCharts.encoders.JPEGEncoder13,org.jCharts.properties.util.ChartFont,
 					  org.jCharts.encoders.ServletEncoderHelper"%><%
 /**************************************************************************************
 * Copyright 2002 (C) Nathaniel G. Auvil. All Rights Reserved.
