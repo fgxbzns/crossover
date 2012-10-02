@@ -215,13 +215,9 @@
 					<input type="file" name="dataFile" id="fileChooser" />
 					<input type="submit" value="Upload" style="font-size: 18px; color: blue"/>
 				</form>
-		
-
 				</div>
 			</div>
 			
-	
-
 			<%
 				String fileName = "";
 				String resultFile = "";
