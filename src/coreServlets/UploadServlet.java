@@ -30,19 +30,17 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 
 		PrintWriter out = response.getWriter();
 		
-
 		if (!isMultipart) {
-			out.println("Hello World");
 			out.println("<html>");
 			out.println("<head>");
 			out.println("<title>Servlet upload</title>");
 			out.println("</head>");
-			out.println("<body>");
-			out.println("<p>No file uploaded</p>");
+			out.println("<body>");			
+			out.println("<p>NThis is not a upload request</p>");
 			out.println("</body>");
 			out.println("</html>");		
 			return;
-		}
+		} 
 
 		// Create a factory for disk-based file items
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -77,11 +75,20 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 			// Parse the request
 			List items = upload.parseRequest(request);
 			Iterator iter = items.iterator();
+			if (!iter.hasNext()) {
+					out.println(iter.hasNext());
+				out.println("<h1>No fields found, please try again</h1>");
+				return;
+			}
 			while (iter.hasNext()) {
 				FileItem item = (FileItem) iter.next();
 
 				if (!item.isFormField()) {
 					String fileName = new File(item.getName()).getName();
+					if(fileName.equals("")){
+						out.println("<h1>No file found, please try again</h1>");
+						return;
+					} 
 					filePath = uploadFolder + fileName;
 
 					File uploadedFile = new File(filePath);
@@ -99,8 +106,8 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 			out.println("</head>");
 			out.println("<body>");
 			
-			out.println("<p> uploadFolder  is  "+uploadFolder+"</p>");
-			out.println("<p> file path is  "+filePath+"</p>");
+			//out.println("<p> uploadFolder  is  "+uploadFolder+"</p>");
+			//out.println("<p> file path is  "+filePath+"</p>");
 //			out.println("<p> path is  "+path+"</p>");
 //			out.println("<p>basePath is  "+basePath+"</p>");
 //			out.println("<p>servletPath is  "+servletPath+"</p>");
@@ -117,5 +124,6 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 		} catch (Exception ex) {
 			throw new ServletException(ex);
 		}
+	
 	}
 }
