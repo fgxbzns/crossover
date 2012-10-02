@@ -10,12 +10,42 @@ public class Reads {
 	private String xy;
 	private String region;
 	private String run;
+	private String sequence;
+	
+	final private String primer = "CGCCGTTTCCCAGTAGGTCTC";
+	final private String adaptor = "ACTGAGTGGGAGGCAAGGCACACAGGGGATAGG";	
 
 	private ArrayList<String> quality_score;
 	private double average_quality_score;
-	private Boolean with_primer;
-	private Boolean with_adapter;
+	private Boolean contain_primer = false;
+	private Boolean contain_adaptor = false;
+	private Boolean contain_both = false;
 	
+
+	public Boolean getContain_primer() {
+		return contain_primer;
+	}
+
+	public void setContain_primer(Boolean containPrimer) {
+		contain_primer = containPrimer;
+	}
+
+	public Boolean getContain_adaptor() {
+		return contain_adaptor;
+	}
+
+	public void setContain_adaptor(Boolean containAdaptor) {
+		contain_adaptor = containAdaptor;
+	}
+
+	public Boolean getContain_both() {
+		return contain_both;
+	}
+
+	public void setContain_both(Boolean containBoth) {
+		contain_both = containBoth;
+	}
+
 
 	public String getIdentifier() {
 		return identifier;
@@ -35,6 +65,14 @@ public class Reads {
 
 	public String getXy() {
 		return xy;
+	}
+
+	public String getSequence() {
+		return sequence;
+	}
+
+	public void setSequence(String sequence) {
+		this.sequence = sequence;
 	}
 
 	public void setXy(String xy) {
@@ -73,25 +111,11 @@ public class Reads {
 		average_quality_score = averageQualityScore;
 	}
 
-	public Boolean getWith_primer() {
-		return with_primer;
-	}
-
-	public void setWith_primer(Boolean withPrimer) {
-		with_primer = withPrimer;
-	}
-
-	public Boolean getWith_adapter() {
-		return with_adapter;
-	}
-
-	public void setWith_adapter(Boolean withAdapter) {
-		with_adapter = withAdapter;
-	}
+	
 
 	
 
-	public void get_quality_score_avage() {
+	public void set_quality_score_avage() {
 		int sum = 0;
 
 		for (int i = 0; i < quality_score.size(); i++) {
@@ -99,5 +123,32 @@ public class Reads {
 		}
 		average_quality_score = sum / quality_score.size();
 	}
+	
+	public void check_if_contains_primer() {
+		int index = sequence.indexOf(primer);
+		if (index >= 0) {
+			contain_primer = true;
+		}
+	}
+	
+	public void check_if_contains_adatpor() {
+		int index = sequence.indexOf(adaptor);
+		if (index >= 0) {
+			contain_adaptor = true;
+		}
+	}
+	
+	public void check_if_contains_both() {
+		check_if_contains_primer();
+		check_if_contains_adatpor();
+		if(contain_primer && contain_adaptor) {
+			contain_both = true;
+		}
+		
+	}
+	
+	
+	
+
 
 }
