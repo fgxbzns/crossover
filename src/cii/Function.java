@@ -151,14 +151,14 @@ public class Function {
 										
 					while (!currentQualElement.startsWith(">") && qualFileInput.hasNext()){
 						quality_score.add(currentQualElement);
-						sum_quality_score += Integer.valueOf(currentQualElement);
-						number_of_quality_score++;
+//						sum_quality_score += Integer.valueOf(currentQualElement);
+//						number_of_quality_score++;
 						currentQualElement = qualFileInput.next();						
 					}
 					if (!qualFileInput.hasNext()) {						
 						quality_score.add(currentQualElement);
-						sum_quality_score += Integer.valueOf(currentQualElement);
-						number_of_quality_score++;
+//						sum_quality_score += Integer.valueOf(currentQualElement);
+//						number_of_quality_score++;
 					}
 					
 //					System.out.println("quality_score size is " + quality_score.size());
