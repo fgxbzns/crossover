@@ -12,7 +12,7 @@ import org.w3c.dom.Document;
 
 public class Simulator {
 	
-	private static String firePath = "d:/Dropbox/hm_share/green card/work/Columbia University/test/";
+	private static String firePath = "e:/Dropbox/hm_share/green card/work/Columbia University/test/";
 //	private static String fileName = "bioinformatics_test";	 
 	private static String fileName = "bioinformatics_test_ori";	 
 	private static String fnaFile = firePath + fileName + ".fna";
@@ -30,7 +30,7 @@ public class Simulator {
 		
 		ArrayList<Reads> readsList = new ArrayList<Reads>();
 		
-		
+		long start = System.currentTimeMillis();
 		
 //		Scanner reader = new Scanner(System.in);
 //		Scanner fnaFileInput = null;
@@ -104,6 +104,10 @@ public class Simulator {
 		System.out.println("number_of_reads_contain_adaptor is " + number_of_reads_contain_adaptor);
 		System.out.println("number_of_reads_contain_both is " + number_of_reads_contain_both);
 		
+		long end = System.currentTimeMillis();
+		
+		long time = end - start;
+		System.out.println("time  is " + time);
 
 	
 	}
