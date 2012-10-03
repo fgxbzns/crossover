@@ -4,11 +4,6 @@ package cii;
 import java.io.*;
 import javax.xml.parsers.*;
 
-//import metabolismSimulator.reactant;
-//import metabolismSimulator.reaction_wobbly;
-
-import org.w3c.dom.*;
-import org.xml.sax.*;
 import java.lang.Object;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -19,29 +14,6 @@ import org.w3c.dom.Node;
 
 public class Function {
 
-	// for the simulation
-
-	static Document doc = null;
-
-	public static Document getDocument(String fileName) {
-		Document doc = null;
-		try {
-			File file = new File(fileName);
-			if (file.exists()) {
-				// Create a factory
-				DocumentBuilderFactory factory = DocumentBuilderFactory
-						.newInstance();
-				// Use the factory to create a builder
-				DocumentBuilder builder = factory.newDocumentBuilder();
-				doc = builder.parse(fileName);
-			} else {
-				System.out.print("File not found!");
-			}
-		} catch (Exception e) {
-			System.exit(1);
-		}
-		return doc;
-	}
 
 
 	
@@ -63,60 +35,9 @@ public class Function {
 //		GlobalSystem.getInstance().setReportInterval(reportInterval);
 //	}
 
-	// get partition information. 
+	// get reads information. 
 	public static ArrayList<Reads> getReadsList(String fna_file, String qual_file) throws Exception {
 		
-//		File file = new File(input_file);
-//	    FileInputStream fis = null;
-//	    BufferedInputStream bis = null;
-//	    DataInputStream dis = null;
-
-		
-//		try {
-//		      fis = new FileInputStream(file);
-//
-//		      // Here BufferedInputStream is added for fast reading.
-//		      bis = new BufferedInputStream(fis);
-//		      dis = new DataInputStream(bis);
-//
-//		      // dis.available() returns 0 if the file does not have more lines.
-//		      while (dis.available() != 0) {
-//
-//		      // this statement reads the line from the file and print it to
-//		        // the console.
-//		        System.out.println(dis.readLine());
-//		      }
-//
-//		      // dispose all the resources after using them.
-//		      fis.close();
-//		      bis.close();
-//		      dis.close();
-//
-//		    } catch (FileNotFoundException e) {
-//		      e.printStackTrace();
-//		    } catch (IOException e) {
-//		      e.printStackTrace();
-//		    }
-	/*	    
-		    try {
-		        BufferedReader in = new BufferedReader(new FileReader(input_file));
-		        String str;
-		        while ((str = in.readLine()) != null) {
-		        	 System.out.println(str);
-		        	 
-		        }
-		        in.close();
-		    } catch (FileNotFoundException e) {
-		      e.printStackTrace();
-		    } catch (IOException e) {
-		      e.printStackTrace();
-		    }
-		*/    
-		
-		
-		
-		
-
 		Scanner reader = new Scanner(System.in);
 		Scanner fnaFileInput = null;
 		Scanner qualFileInput = null;
@@ -142,7 +63,9 @@ public class Function {
 			System.exit(0);
 		}
 		
-		ArrayList<String> quality_score = new ArrayList<String>();;
+		ArrayList<String> quality_score = new ArrayList<String>();
+		double sum_quality_score = 0;
+		double number_of_quality_score = 0;
 		double average_quality_score;
 		
 		//String sequence = "";
@@ -167,7 +90,9 @@ public class Function {
 					String region;
 					String run;	
 					sequence = new StringBuffer (""); // start a new read, empty the sequence.
-					
+					sum_quality_score = 0;
+					number_of_quality_score = 0;
+									
 					
 					identifier = currentFnaElement.substring(currentFnaElement.indexOf('>')+1);
 					
@@ -226,17 +151,21 @@ public class Function {
 										
 					while (!currentQualElement.startsWith(">") && qualFileInput.hasNext()){
 						quality_score.add(currentQualElement);
-						currentQualElement = qualFileInput.next();
-						
+						sum_quality_score += Integer.valueOf(currentQualElement);
+						number_of_quality_score++;
+						currentQualElement = qualFileInput.next();						
 					}
 					if (!qualFileInput.hasNext()) {						
 						quality_score.add(currentQualElement);
+						sum_quality_score += Integer.valueOf(currentQualElement);
+						number_of_quality_score++;
 					}
 					
 //					System.out.println("quality_score size is " + quality_score.size());
 //					System.out.println("quality_score is " + quality_score);
 					
 					current_read.setQuality_score(quality_score);
+//					current_read.setAverage_quality_score(sum_quality_score/number_of_quality_score);
 					current_read.set_quality_score_avage();
 					
 					readsList.add(current_read);
@@ -254,9 +183,6 @@ public class Function {
 		qualFileInput.close();
 		
 		return readsList;
-		
-		
-		
 	
 	}
 	

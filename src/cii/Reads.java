@@ -111,12 +111,8 @@ public class Reads {
 		average_quality_score = averageQualityScore;
 	}
 
-	
-
-	
-
 	public void set_quality_score_avage() {
-		int sum = 0;
+		double sum = 0;
 
 		for (int i = 0; i < quality_score.size(); i++) {
 			sum += Integer.valueOf(quality_score.get(i));
@@ -139,12 +135,9 @@ public class Reads {
 	}
 	
 	public void check_if_contains_both() {
-		check_if_contains_primer();
-		check_if_contains_adatpor();
 		if(contain_primer && contain_adaptor) {
 			contain_both = true;
-		}
-		
+		}		
 	}
 	
 	
