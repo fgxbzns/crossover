@@ -120,24 +120,30 @@ public class Reads {
 		average_quality_score = sum / quality_score.size();
 	}
 	
-	public void check_if_contains_primer() {
+	public boolean check_if_contains_primer() {
 		int index = sequence.indexOf(primer);
 		if (index >= 0) {
 			contain_primer = true;
+			return true;
 		}
+		return false;
 	}
 	
-	public void check_if_contains_adatpor() {
+	public boolean check_if_contains_adatpor() {
 		int index = sequence.indexOf(adaptor);
 		if (index >= 0) {
 			contain_adaptor = true;
+			return true;
 		}
+		return false;
 	}
 	
-	public void check_if_contains_both() {
+	public boolean check_if_contains_both() {
 		if(contain_primer && contain_adaptor) {
 			contain_both = true;
-		}		
+			return true;
+		}
+		return false;
 	}
 	
 	

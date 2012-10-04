@@ -10,15 +10,18 @@ import java.util.Scanner;
 
 import org.w3c.dom.Document;
 
+import coreServlets.Reactant;
+
 public class Simulator {
 	
-	private static String firePath = "e:/Dropbox/hm_share/green card/work/Columbia University/test/";
+	private static String firePath = "d:/Dropbox/hm_share/green card/work/Columbia University/test/";
 //	private static String fileName = "bioinformatics_test";	 
-	private static String fileName = "bioinformatics_test_ori";	 
+	private static String fileName = "bioinformatics_test_70000";	
+//	private static String fileName = "bioinformatics_test_ori";	 
 	private static String fnaFile = firePath + fileName + ".fna";
 	private static String qualFile = firePath + fileName + ".qual";
 
-	private static int reads_total_number;
+	private static int number_of_total_reads;
 	private static int number_of_reads_greater_than_100bp;
 	private static int number_of_reads_aqs_greater_than_20;
 	private static int number_of_reads_contain_primer;
@@ -67,37 +70,46 @@ public class Simulator {
 		
 		
 		
-		readsList = Function.getReadsList(fnaFile, qualFile);
-		
-		
-		reads_total_number = readsList.size();
-		for (int i = 0; i < readsList.size(); i++) {
-			Reads current_read = readsList.get(i);
-//			System.out.println("length is " + current_read.getLength());
-//			System.out.println("length is " + current_read.getIdentifier());
-			if (current_read.getLength() > 100) {
-				
-				number_of_reads_greater_than_100bp ++;
-			}			
-			if (current_read.getAverage_quality_score() > 20) {
-				number_of_reads_aqs_greater_than_20 ++;
-			}
-			if (current_read.getContain_primer()) {
-				number_of_reads_contain_primer ++;
-			}
-			if (current_read.getContain_adaptor()) {
-				number_of_reads_contain_adaptor ++;
-			}
-			if (current_read.getContain_both()) {
-				number_of_reads_contain_both ++;
-			}
-			
-			
-		}
+//		readsList = Function.getReadsList(fnaFile, qualFile);
+//		
+//		
+//		number_of_total_reads = readsList.size();
+//		for (int i = 0; i < readsList.size(); i++) {
+//			Reads current_read = readsList.get(i);
+//
+//			if (current_read.getLength() > 100) {
+//				
+//				number_of_reads_greater_than_100bp ++;
+//			}			
+//			if (current_read.getAverage_quality_score() > 20) {
+//				number_of_reads_aqs_greater_than_20 ++;
+//			}
+//			if (current_read.getContain_primer()) {
+//				number_of_reads_contain_primer ++;
+//			}
+//			if (current_read.getContain_adaptor()) {
+//				number_of_reads_contain_adaptor ++;
+//			}
+//			if (current_read.getContain_both()) {
+//				number_of_reads_contain_both ++;
+//			}
+//			
+//			
+//		}
 		
 //		Function.printReadsList(readsList);
 		
-		System.out.println("reads_total_number is " + reads_total_number);
+		Results result = Function.processReadsList(fnaFile, qualFile);
+		
+		
+		number_of_total_reads = result.getNumber_of_total_reads();
+		number_of_reads_greater_than_100bp = result.getNumber_of_reads_greater_than_100bp();
+		number_of_reads_aqs_greater_than_20 = result.getNumber_of_reads_aqs_greater_than_20();
+		number_of_reads_contain_primer = result.getNumber_of_reads_contain_primer();
+		number_of_reads_contain_adaptor = result.getNumber_of_reads_contain_adaptor();
+		number_of_reads_contain_both = result.getNumber_of_reads_contain_both();
+		
+		System.out.println("number_of_total_reads is " + number_of_total_reads);
 		System.out.println("number_of_reads_greater_than_100bp is " + number_of_reads_greater_than_100bp);
 		System.out.println("number_of_reads_aqs_greater_than_20 is " + number_of_reads_aqs_greater_than_20);
 		System.out.println("number_of_reads_contain_primer is " + number_of_reads_contain_primer);
@@ -108,6 +120,40 @@ public class Simulator {
 		
 		long time = end - start;
 		System.out.println("time  is " + time);
+		
+		
+		
+//		2) Fasta file containing reads greater than 100bp, average read quality scores greater than 20, primers and adaptors trimmed.
+		
+		
+		
+		
+//		try {
+//			String reactionFile = firePath + fileName + "fasta.txt";
+//			BufferedWriter fasta = new BufferedWriter(new FileWriter(reactionFile));
+//			
+//			for (int i = 0; i < readsList.size(); i++) {
+//				Reads current_read = readsList.get(i);
+//				
+//				if (current_read.getLength() > 100 && current_read.getAverage_quality_score() > 20) {				
+//				}
+//						
+//			}
+//
+//			fasta.close();
+//			
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
+//		
+		
+		
+		
+		
+		
+		
+		
+		
 
 	
 	}
