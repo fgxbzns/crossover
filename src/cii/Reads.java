@@ -1,26 +1,30 @@
+//Exercise program of Center for Infection and Immunity
+//Stores reads information.
+//Author: Guoxing Fu 
+//Oct. 4 2011
+
 package cii;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 
 public class Reads {
-	
+
 	private String identifier;
 	private int length;
 	private String xy;
 	private String region;
 	private String run;
 	private String sequence;
-	
+
 	final private String primer = "CGCCGTTTCCCAGTAGGTCTC";
-	final private String adaptor = "ACTGAGTGGGAGGCAAGGCACACAGGGGATAGG";	
+	final private String adaptor = "ACTGAGTGGGAGGCAAGGCACACAGGGGATAGG";
 
 	private ArrayList<String> quality_score;
 	private double average_quality_score;
 	private Boolean contain_primer = false;
 	private Boolean contain_adaptor = false;
 	private Boolean contain_both = false;
-	
 
 	public Boolean getContain_primer() {
 		return contain_primer;
@@ -45,7 +49,6 @@ public class Reads {
 	public void setContain_both(Boolean containBoth) {
 		contain_both = containBoth;
 	}
-
 
 	public String getIdentifier() {
 		return identifier;
@@ -119,7 +122,7 @@ public class Reads {
 		}
 		average_quality_score = sum / quality_score.size();
 	}
-	
+
 	public boolean check_if_contains_primer() {
 		int index = sequence.indexOf(primer);
 		if (index >= 0) {
@@ -128,7 +131,7 @@ public class Reads {
 		}
 		return false;
 	}
-	
+
 	public boolean check_if_contains_adatpor() {
 		int index = sequence.indexOf(adaptor);
 		if (index >= 0) {
@@ -137,17 +140,13 @@ public class Reads {
 		}
 		return false;
 	}
-	
+
 	public boolean check_if_contains_both() {
-		if(contain_primer && contain_adaptor) {
+		if (contain_primer && contain_adaptor) {
 			contain_both = true;
 			return true;
 		}
 		return false;
 	}
-	
-	
-	
-
 
 }

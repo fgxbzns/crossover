@@ -1,3 +1,8 @@
+//Exercise program of Center for Infection and Immunity
+//Stores results information.
+//Author: Guoxing Fu 
+//Oct. 4 2011
+
 package cii;
 
 public class Results {
