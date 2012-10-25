@@ -5,9 +5,11 @@ import java.io.PrintWriter;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -19,7 +21,7 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 	static final long serialVersionUID = 1L;
 
 	private static final String DATA_DIRECTORY = "";
-	private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 2;
+	private static final int MAX_MEMORY_SIZE = 1024 * 1024 * 20;
 	private static final int MAX_REQUEST_SIZE = 1024 * 1024;
 	static String filePath = "";
 
@@ -29,6 +31,8 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
 
 		PrintWriter out = response.getWriter();
+		String fileName= "";
+		String userFile= "";
 		
 		if (!isMultipart) {
 			out.println("<html>");
@@ -56,15 +60,8 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 
 		// constructs the folder where uploaded file will be stored
 		String uploadFolder = getServletContext().getRealPath("")
-				+ File.separator + DATA_DIRECTORY;
+				+ File.separator + DATA_DIRECTORY + "/models/";
 		
-//		String path = request.getContextPath();
-//		String basePath = request.getScheme() + "://"
-//				+ request.getServerName() + ":" + request.getServerPort()
-//				+ path + "/";
-//		String servletPath = basePath + "servlet/coreservlets.";
-		
-
 		// Create a new file upload handler
 		ServletFileUpload upload = new ServletFileUpload(factory);
 
@@ -84,7 +81,7 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 				FileItem item = (FileItem) iter.next();
 
 				if (!item.isFormField()) {
-					String fileName = new File(item.getName()).getName();
+					fileName = new File(item.getName()).getName();
 					if(fileName.equals("")){
 						out.println("<h1>No file found, please try again</h1>");
 						return;
@@ -105,18 +102,28 @@ public class UploadServlet extends javax.servlet.http.HttpServlet implements
 			out.println("<title>Servlet upload</title>");
 			out.println("</head>");
 			out.println("<body>");
-			
-			//out.println("<p> uploadFolder  is  "+uploadFolder+"</p>");
-			//out.println("<p> file path is  "+filePath+"</p>");
-//			out.println("<p> path is  "+path+"</p>");
-//			out.println("<p>basePath is  "+basePath+"</p>");
-//			out.println("<p>servletPath is  "+servletPath+"</p>");
-			
+		
 			out.println("</body>");
 			out.println("</html>");
 			
-			// displays done.jsp page after upload finished
-//			getServletContext().getRequestDispatcher("/done.jsp").forward(
+			//request.setAttribute(userFile, fileName);
+			
+			HttpSession session = request.getSession(false);
+			
+//			if(session!=null) {
+//				session.invalidate();
+//				}
+			// Create a new session for the user.
+			session = request.getSession(true); 
+
+			//HttpSession session = request.getSession(false);
+			session.setAttribute("userFile", fileName.substring(0, fileName.indexOf('.')));
+				
+			RequestDispatcher dispatcher = request.getRequestDispatcher("../webSimulator.jsp");
+			
+//			RequestDispatcher dispatcher = request.getRequestDispatcher("http://www.gsu.edu");
+			dispatcher.forward(request, response);
+//			getServletContext().getRequestDispatcher("/webSimulator.jsp").forward(
 //					request, response);
 
 		} catch (FileUploadException ex) {
