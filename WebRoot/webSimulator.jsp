@@ -1,6 +1,3 @@
-<%--Web Simulator for deterministic-stochastic crossover algorithm
-Author: Guoxing Fu--%>
-
 <%@ page language="java"
 	import="java.util.*,java.sql.*,javax.servlet.*,java.io.*,org.w3c.dom.Document,coreServlets.*"
 	import="java.awt.*,org.jCharts.*,org.jCharts.chartData.*,org.jCharts.properties.*,org.jCharts.types.ChartType,org.jCharts.axisChart.*,org.jCharts.test.TestDataGenerator,org.jCharts.encoders.JPEGEncoder13,org.jCharts.properties.util.ChartFont,
@@ -17,6 +14,11 @@ Author: Guoxing Fu--%>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
 	<head>
+
+<!--			Web Simulator for deterministic-stochastic crossover algorithm-->
+<!--			Author: Guoxing Fu-->
+
+
 		<base href="<%=basePath%>">
 
 		<title>Crossover Algorithm</title>
@@ -38,8 +40,8 @@ Author: Guoxing Fu--%>
 		<div class="mainboard">
 
 			<div id="introduction">
-				<h1 align="center"> 
-					Deterministic-Stochastic Crossover Algorithm 
+				<h1 align="center">
+					Deterministic-Stochastic Crossover Algorithm
 				</h1>
 				<div id="introduction_text">
 					<h2>
