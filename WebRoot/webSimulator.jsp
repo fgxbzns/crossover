@@ -1,3 +1,6 @@
+<%--Web Simulator for deterministic-stochastic crossover algorithm
+Author: Guoxing Fu--%>
+
 <%@ page language="java"
 	import="java.util.*,java.sql.*,javax.servlet.*,java.io.*,org.w3c.dom.Document,coreServlets.*"
 	import="java.awt.*,org.jCharts.*,org.jCharts.chartData.*,org.jCharts.properties.*,org.jCharts.types.ChartType,org.jCharts.axisChart.*,org.jCharts.test.TestDataGenerator,org.jCharts.encoders.JPEGEncoder13,org.jCharts.properties.util.ChartFont,
@@ -25,8 +28,6 @@
 		<meta http-equiv="description" content="This is my page">
 
 		<%-- css --%>
-		<!--		<link href="http://i5-pc:8080/crossover/common.css" rel="stylesheet"-->
-		<!--			type="text/css" />-->
 		<link href="<%out.println(basePath);%>common.css" rel="stylesheet"
 			type="text/css" />
 
@@ -37,8 +38,8 @@
 		<div class="mainboard">
 
 			<div id="introduction">
-				<h1 align="center">
-					Deterministic-Stochastic Crossover Algorithm
+				<h1 align="center"> 
+					Deterministic-Stochastic Crossover Algorithm 
 				</h1>
 				<div id="introduction_text">
 					<h2>
@@ -206,302 +207,295 @@
 					<!--								<%out.println(basePath + "webSimulator.jsp?fileName=glycolysis");%>">Run-->
 					<!--							simulation</a>-->
 					<!--					</h4>-->
-					
-					
-					
-					
-					<form  method="post" action="<%out.println(servletPath + "UploadServlet");%>"
-					enctype="multipart/form-data">
-					Select file to upload:
-					<input type="file" name="dataFile" id="fileChooser" />
-					<input type="submit" value="Upload" style="font-size: 18px; color: blue"/>
-				</form>
-				<%
-					String userFile = "";
 
-					synchronized (session) {
 
-						if (session.getAttribute("userFile") != null) {
-							userFile = (String) session.getAttribute("userFile");
+
+
+					<form method="post"
+						action="<%out.println(servletPath + "UploadServlet");%>"
+						enctype="multipart/form-data">
+						Select file to upload:
+						<input type="file" name="dataFile" id="fileChooser" />
+						<input type="submit" value="Upload"
+							style="font-size: 18px; color: blue" />
+					</form>
+					<%
+						String userFile = "";
+						synchronized (session) {
+							if (session.getAttribute("userFile") != null) {
+								userFile = (String) session.getAttribute("userFile");
+							}
 						}
-					}
-
-					//	if (request.getParameter("userFile") != null) {
-					//		userFile = request.getParameter("userFile");
-					//	}
-				%>
+					%>
 
 					<h4 align='left'>
 						User uploaded file:
-						<%out.println(userFile);%>
+						<%
+						out.println(userFile);
+					%>
 						&nbsp
-						<a
-							href="<%out
-					.println(servletPath
-							+ "DisplayReactionList?fileName="+userFile);%>"
-							target='_blank'>Reactions</a>&nbsp
-						<a href="<%out.println(basePath);%>models/<%out.println(userFile);%>.xml"
-							target='_blank'>XML</a>&nbsp
-						<a
-							href="
-			<%out.println(basePath + "webSimulator.jsp?fileName="+userFile);%>">Run
-							simulation</a>
-					</h4>
 
-				</div>
-			</div>
-			
-			<%
-							String fileName = "";
-							String resultFile = "";
+						<%
+							if (userFile != "") {
+								out.println("<a	href='" + servletPath
+										+ "DisplayReactionList?fileName=" + userFile
+										+ "' target='_blank' >Reactions</a>&nbsp");
 
-							//model xml file location
-							String modelDiskPath = getServletContext().getRealPath("")
-									+ File.separator + "models/";
-							String simulationMethod = "crossover"; //default value			
+								out.println("<a	href='" + basePath + "models/" + userFile
+										+ ".xml' target='_blank' >XML</a>&nbsp");
 
-							boolean isDeterministic = false;
-							boolean isCrossover = true;
-
-							//		String uploadFolder = "D:/webServer/";
-							//String uploadFolder = "e:/Dropbox/major/cs_project/webServer/models/";
-
-							GlobalSystem system = GlobalSystem.getInstance();
-
-							if (request.getParameter("fileName") != null) {
-								fileName = request.getParameter("fileName");
-								system.setCurrentModel(fileName);
-							} else if (!system.getCurrentModel().equals("")) {
-								fileName = system.getCurrentModel();
-							} else {
-								fileName = "enzyme"; //default model
-							}
-
-							//fileName = "enzyme"; //default model
-
-							if (request.getParameter("simulationMethod") != null
-									&& request.getParameter("simulationMethod").equals(
-											"deterministic")) {
-								simulationMethod = "deterministic";
-								system.setSimulationMethod("deterministic");
-								isDeterministic = true;
-								isCrossover = false;
-							} else if (request.getParameter("simulationMethod") != null
-									&& request.getParameter("simulationMethod").equals(
-											"crossover")) {
-								simulationMethod = "crossover";
-								system.setSimulationMethod("crossover");
-							} else if (!system.getSimulationMethod().equals("")) {
-								simulationMethod = system.getSimulationMethod();
-							} else {
-								system.setSimulationMethod("crossover"); //default method
-								isDeterministic = false;
-								isCrossover = true;
-							}
-
-							//filePath = modelDiskPath + fileName;
-							String xmlFile = modelDiskPath + fileName + ".xml";
-
-							//String xmlFile = basePath + fileName + ".xml";
-							//out.println(" basePath  is  " + basePath + "");
-							//out.println(" modelDiskPath  is  " + modelDiskPath + "");
-							//	out.println(" file path is  " + xmlFile + "");
-
-							Document doc = null;
-							doc = Function.getDocument(xmlFile);
-
-							ArrayList<Partition> partitionList = new ArrayList<Partition>();
-
-							ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
-							ArrayList<Reaction> reactionList = new ArrayList<Reaction>();
-
-							ArrayList<String> timeList = new ArrayList<String>(); // list for time steps
-
-							Function.getGlobalSystem(doc);
-
-							// get partition with its reactants and reactions
-							try {
-								Function.getPartitionList(doc);
-							} catch (Exception e1) {
-								e1.printStackTrace();
-							}
-
-							float time = 0, dt = (float) 0.001; // dt =0.001s
-							int totalTime = system.getTotal(); // 100s
-							int reportInterval = system.getReportInterval(); // 100 points
-
-							//int totalTime = 100000; // 100s
-							//int reportInterval = 1000; // 100 points
-
-							// pass user defined totalTime and numOfPoints for graph display
-							synchronized (session) {
-
-								if (session.getAttribute("totalTime") != null
-										&& session.getAttribute("reportInterval") != null) {
-									totalTime = (Integer) session.getAttribute("totalTime");
-									system.setTotal(totalTime);
-									reportInterval = (Integer) session
-											.getAttribute("reportInterval");
-									system.setReportInterval(reportInterval);
-
-									//out.println(totalTime);
-									//out.println (reportInterval);
-								}
-
-								session.removeAttribute("totalTime");
-								session.removeAttribute("reportInterval");
-							}
-
-							// totalTime and numOfPoints submitted by form are checked here.
-							if (request.getParameter("totalTime") != null) {
-								totalTime = Integer.parseInt(request.getParameter("totalTime"));
-								system.setTotal(totalTime);
-								synchronized (session) {
-									session.setAttribute("totalTime", totalTime);
-								}
-							}
-
-							if (request.getParameter("numOfPoints") != null) {
-								reportInterval = totalTime
-										/ Integer.parseInt(request.getParameter("numOfPoints"));
-								system.setReportInterval(reportInterval);
-								synchronized (session) {
-									session.setAttribute("reportInterval", reportInterval);
-								}
-							}
-
-							partitionList = system.getPartitions();
-
-							timeList = system.getTimeList();
-
-							reactantList = partitionList.get(0).getReactantList();
-
-							/*			try {
-							 reactionList = partitionList.get(0).getReactionList();
-							 out.println("<p>there are " + reactionList.size()
-							 + " reactions </p>");
-							 } catch (Exception e) {
-							 e.printStackTrace();
-							 }
-							 *///out.println(Function.printReactantListWeb(partitionList));
-
-							rrandom random;
-							random = new rrandom(1010101);
-
-							try {
-								resultFile = modelDiskPath + fileName + ".xls";
-								BufferedWriter outputFile = new BufferedWriter(new FileWriter(
-										resultFile));
-
-								outputFile.write("Time \t");
-
-								// write name for species
-								for (int m = 0; m < partitionList.size(); m++) {
-									String partitionName = partitionList.get(m)
-											.getPartitionName();
-									outputFile.write(partitionName + " \t");
-									ArrayList<Reactant> currentReactantList = partitionList
-											.get(m).getReactantList();
-									for (int j = 0; j < currentReactantList.size(); j++) {
-										Reactant currentReactant = new Reactant();
-										currentReactant = currentReactantList.get(j);
-										if (!currentReactant.getIs_enzyme()
-												&& (currentReactant.getOutputTo()
-														.equals(partitionName))) {
-											outputFile.write(currentReactant
-													.getMy_chemical_name()
-													+ "\t");
-										}
-									}
-								}
-
-								outputFile.write("\n");
-								outputFile.write(time + " \t");
-
-								// write initial number
-								for (int m = 0; m < partitionList.size(); m++) {
-									String partitionName = partitionList.get(m)
-											.getPartitionName();
-									outputFile.write(" \t");
-									ArrayList<Reactant> currentReactantList = partitionList
-											.get(m).getReactantList();
-									for (int j = 0; j < currentReactantList.size(); j++) {
-										Reactant currentReactant = new Reactant();
-										currentReactant = currentReactantList.get(j);
-										if (!currentReactant.getIs_enzyme()) {
-											outputFile
-													.write(currentReactant.getNumber() + "\t");
-										}
-										currentReactant.getDataList().add(
-												currentReactant.getNumber());
-									}
-								}
-
-								outputFile.write("\n");
-
-								for (int i = 0; i < totalTime; i += reportInterval) {
-									for (int j = 0; j < reportInterval; j++) {
-										if (simulationMethod.equals("crossover")) {
-											for (int m = 0; m < system.getPartitions().size(); m++) {
-												Partition currentPartion = system
-														.getPartitions().get(m);
-												currentPartion.reactionProceedCrossover(dt,
-														random);
-											}
-										}
-
-										if (simulationMethod.equals("deterministic")) {
-											for (int m = 0; m < system.getPartitions().size(); m++) {
-												Partition currentPartion = system
-														.getPartitions().get(m);
-												currentPartion.reactionProceedDeterministic(dt,
-														random);
-											}
-										}
-
-										for (int m = 0; m < system.getPartitions().size(); m++) {
-											Partition currentPartion = system.getPartitions()
-													.get(m);
-											currentPartion.update();
-										}
-										//check for event
-										for (int m = 0; m < system.getPartitions().size(); m++) {
-											Partition currentPartion = system.getPartitions()
-													.get(m);
-											currentPartion.checkEvent(time, dt);
-										}
-
-										time += dt;
-									}
-									outputFile.write(time + "\t");
-
-									for (int m = 0; m < partitionList.size(); m++) {
-										String partitionName = partitionList.get(m)
-												.getPartitionName();
-										outputFile.write(" \t");
-										ArrayList<Reactant> currentReactantList = partitionList
-												.get(m).getReactantList();
-										for (int j = 0; j < currentReactantList.size(); j++) {
-											Reactant currentReactant = new Reactant();
-											currentReactant = currentReactantList.get(j);
-											if (!currentReactant.getIs_enzyme()
-													&& (currentReactant.getOutputTo()
-															.equals(partitionName))) {
-												outputFile.write(currentReactant.getNumber()
-														+ "\t");
-											}
-											currentReactant.getDataList().add(
-													currentReactant.getNumber());
-										}
-									}
-									outputFile.write("\n");
-								}
-								outputFile.close();
-
-							} catch (IOException e) {
-								e.printStackTrace();
+								out.println("<a	href='" + basePath
+										+ "webSimulator.jsp?fileName=" + userFile
+										+ "'>Run simulation</a>&nbsp");
 							}
 						%>
+					</h4>
+				</div>
+			</div>
+
+			<%
+				String fileName = "";
+				String resultFile = "";
+
+				//model xml file location
+				String modelDiskPath = getServletContext().getRealPath("")
+						+ File.separator + "models/";
+				String simulationMethod = "crossover"; //default value			
+
+				boolean isDeterministic = false;
+				boolean isCrossover = true;
+
+				GlobalSystem system = GlobalSystem.getInstance();
+
+				if (request.getParameter("fileName") != null) {
+					fileName = request.getParameter("fileName");
+					system.setCurrentModel(fileName);
+				} else if (!system.getCurrentModel().equals("")) {
+					fileName = system.getCurrentModel();
+				} else {
+					fileName = "enzyme"; //default model
+				}
+
+				if (request.getParameter("simulationMethod") != null
+						&& request.getParameter("simulationMethod").equals(
+								"deterministic")) {
+					simulationMethod = "deterministic";
+					system.setSimulationMethod("deterministic");
+					isDeterministic = true;
+					isCrossover = false;
+				} else if (request.getParameter("simulationMethod") != null
+						&& request.getParameter("simulationMethod").equals(
+								"crossover")) {
+					simulationMethod = "crossover";
+					system.setSimulationMethod("crossover");
+				} else if (!system.getSimulationMethod().equals("")) {
+					simulationMethod = system.getSimulationMethod();
+				} else {
+					system.setSimulationMethod("crossover"); //default method
+					isDeterministic = false;
+					isCrossover = true;
+				}
+
+				//filePath = modelDiskPath + fileName;
+				String xmlFile = modelDiskPath + fileName + ".xml";
+
+				//String xmlFile = basePath + fileName + ".xml";
+				//out.println(" basePath  is  " + basePath + "");
+				//out.println(" modelDiskPath  is  " + modelDiskPath + "");
+				//out.println(" file path is  " + xmlFile + "");
+
+				Document doc = null;
+				doc = Function.getDocument(xmlFile);
+
+				ArrayList<Partition> partitionList = new ArrayList<Partition>();
+
+				ArrayList<Reactant> reactantList = new ArrayList<Reactant>();
+				ArrayList<Reaction> reactionList = new ArrayList<Reaction>();
+
+				ArrayList<String> timeList = new ArrayList<String>(); // list for time steps
+
+				Function.getGlobalSystem(doc);
+
+				// get partition with its reactants and reactions
+				try {
+					Function.getPartitionList(doc);
+				} catch (Exception e1) {
+					e1.printStackTrace();
+				}
+
+				float time = 0, dt = (float) 0.001; // dt =0.001s
+				int totalTime = system.getTotal(); // 100s
+				int reportInterval = system.getReportInterval(); // 100 points
+
+				//int totalTime = 100000; // 100s
+				//int reportInterval = 1000; // 100 points
+
+				// pass user defined totalTime and numOfPoints for graph display
+				synchronized (session) {
+
+					if (session.getAttribute("totalTime") != null
+							&& session.getAttribute("reportInterval") != null) {
+						totalTime = (Integer) session.getAttribute("totalTime");
+						system.setTotal(totalTime);
+						reportInterval = (Integer) session
+								.getAttribute("reportInterval");
+						system.setReportInterval(reportInterval);
+					}
+
+					session.removeAttribute("totalTime");
+					session.removeAttribute("reportInterval");
+				}
+
+				// totalTime and numOfPoints submitted by form are checked here.
+				if (request.getParameter("totalTime") != null) {
+					totalTime = Integer.parseInt(request.getParameter("totalTime"));
+					system.setTotal(totalTime);
+					synchronized (session) {
+						session.setAttribute("totalTime", totalTime);
+					}
+				}
+
+				if (request.getParameter("numOfPoints") != null) {
+					reportInterval = totalTime
+							/ Integer.parseInt(request.getParameter("numOfPoints"));
+					system.setReportInterval(reportInterval);
+					synchronized (session) {
+						session.setAttribute("reportInterval", reportInterval);
+					}
+				}
+
+				partitionList = system.getPartitions();
+
+				timeList = system.getTimeList();
+
+				reactantList = partitionList.get(0).getReactantList();
+
+				/*			try {
+				 reactionList = partitionList.get(0).getReactionList();
+				 out.println("<p>there are " + reactionList.size()
+				 + " reactions </p>");
+				 } catch (Exception e) {
+				 e.printStackTrace();
+				 }
+				 *///out.println(Function.printReactantListWeb(partitionList));
+
+				rrandom random;
+				random = new rrandom(1010101);
+
+				try {
+					resultFile = modelDiskPath + fileName + ".xls";
+					BufferedWriter outputFile = new BufferedWriter(new FileWriter(
+							resultFile));
+
+					outputFile.write("Time \t");
+
+					// write name for species
+					for (int m = 0; m < partitionList.size(); m++) {
+						String partitionName = partitionList.get(m)
+								.getPartitionName();
+						outputFile.write(partitionName + " \t");
+						ArrayList<Reactant> currentReactantList = partitionList
+								.get(m).getReactantList();
+						for (int j = 0; j < currentReactantList.size(); j++) {
+							Reactant currentReactant = new Reactant();
+							currentReactant = currentReactantList.get(j);
+							if (!currentReactant.getIs_enzyme()
+									&& (currentReactant.getOutputTo()
+											.equals(partitionName))) {
+								outputFile.write(currentReactant
+										.getMy_chemical_name()
+										+ "\t");
+							}
+						}
+					}
+
+					outputFile.write("\n");
+					outputFile.write(time + " \t");
+
+					// write initial number
+					for (int m = 0; m < partitionList.size(); m++) {
+						String partitionName = partitionList.get(m)
+								.getPartitionName();
+						outputFile.write(" \t");
+						ArrayList<Reactant> currentReactantList = partitionList
+								.get(m).getReactantList();
+						for (int j = 0; j < currentReactantList.size(); j++) {
+							Reactant currentReactant = new Reactant();
+							currentReactant = currentReactantList.get(j);
+							if (!currentReactant.getIs_enzyme()) {
+								outputFile
+										.write(currentReactant.getNumber() + "\t");
+							}
+							currentReactant.getDataList().add(
+									currentReactant.getNumber());
+						}
+					}
+
+					outputFile.write("\n");
+
+					for (int i = 0; i < totalTime; i += reportInterval) {
+						for (int j = 0; j < reportInterval; j++) {
+							if (simulationMethod.equals("crossover")) {
+								for (int m = 0; m < system.getPartitions().size(); m++) {
+									Partition currentPartion = system
+											.getPartitions().get(m);
+									currentPartion.reactionProceedCrossover(dt,
+											random);
+								}
+							}
+
+							if (simulationMethod.equals("deterministic")) {
+								for (int m = 0; m < system.getPartitions().size(); m++) {
+									Partition currentPartion = system
+											.getPartitions().get(m);
+									currentPartion.reactionProceedDeterministic(dt,
+											random);
+								}
+							}
+
+							for (int m = 0; m < system.getPartitions().size(); m++) {
+								Partition currentPartion = system.getPartitions()
+										.get(m);
+								currentPartion.update();
+							}
+							//check for event
+							for (int m = 0; m < system.getPartitions().size(); m++) {
+								Partition currentPartion = system.getPartitions()
+										.get(m);
+								currentPartion.checkEvent(time, dt);
+							}
+
+							time += dt;
+						}
+						outputFile.write(time + "\t");
+
+						for (int m = 0; m < partitionList.size(); m++) {
+							String partitionName = partitionList.get(m)
+									.getPartitionName();
+							outputFile.write(" \t");
+							ArrayList<Reactant> currentReactantList = partitionList
+									.get(m).getReactantList();
+							for (int j = 0; j < currentReactantList.size(); j++) {
+								Reactant currentReactant = new Reactant();
+								currentReactant = currentReactantList.get(j);
+								if (!currentReactant.getIs_enzyme()
+										&& (currentReactant.getOutputTo()
+												.equals(partitionName))) {
+									outputFile.write(currentReactant.getNumber()
+											+ "\t");
+								}
+								currentReactant.getDataList().add(
+										currentReactant.getNumber());
+							}
+						}
+						outputFile.write("\n");
+					}
+					outputFile.close();
+
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			%>
 
 
 			<div id="parameters_div">
@@ -511,13 +505,6 @@
 
 				<form name="myform" id="myForm" method="post"
 					action="webSimulator.jsp" onsubmit="return validate_form(this)">
-					<!--					<fieldset id="parameters_fieldset">-->
-					<!--						<legend>-->
-					<!--							Parameters setting-->
-					<!--						</legend>-->
-
-
-
 
 					<table class='parameters_table' cellpadding="3" cellspacing="3">
 						<tr>
@@ -579,13 +566,9 @@
 						</tr>
 
 					</table>
-					<!--					</fieldset>-->
 				</form>
 			</div>
 			<div id="result_div">
-
-
-
 				<%
 					resultFile = basePath + "models/" + fileName + ".xls";
 
@@ -654,16 +637,9 @@
 						out.println("</table><br><br>");
 					}
 				%>
-
 			</div>
 
-			<!--			<div id="graph_div">-->
 			<div id="">
-
-
-				<!--				<img src="servlet/coreServlets.Jchart" alt="Simulation graph"-->
-				<!--					height="360" width="550" />-->
-
 				<%
 					String reactantToDisplay = "";
 
@@ -684,16 +660,7 @@
 						//out.println("Please choose a reactant to display.");
 					}
 				%>
-
-
-
-
 			</div>
-
-
 		</div>
-
-
-
 	</body>
 </html>
